@@ -39,7 +39,15 @@ public class Stored_music {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Object> emitter) throws Throwable {
                 Uri uri= MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                Cursor cursor=context.getContentResolver().query(uri,null,MediaStore.Audio.Media.IS_MUSIC+"!=0",null,null);
+                String[] projection={
+                        MediaStore.Audio.Media.TITLE,
+                        MediaStore.Audio.Media.ARTIST,
+                        MediaStore.Audio.Media.DURATION,
+                        MediaStore.Audio.Media.ALBUM_ID,
+                        MediaStore.Audio.Media.DATA
+                };
+
+                Cursor cursor=context.getContentResolver().query(uri,projection,MediaStore.Audio.Media.IS_MUSIC+"!=0",null,null);
                 ArrayList<Music_item> listOfSongs=new ArrayList<>();
                 while (cursor.moveToNext()){
                     Music_item music= new Music_item();
