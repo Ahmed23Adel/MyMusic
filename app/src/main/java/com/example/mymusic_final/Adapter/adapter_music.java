@@ -50,7 +50,12 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
     public void onBindViewHolder(@NonNull itemHolder holder, int position) {
         Music_item currentMusic=listOfSongs.get(position);
         holder.title.setText(currentMusic.getMusic_title());
-        holder.artist.setText(currentMusic.getArtist());
+        if (currentMusic.getArtist().equals("<unknown>")){
+            holder.artist.setVisibility(View.GONE);
+        }else{
+            holder.artist.setText(currentMusic.getArtist());
+        }
+
         holder.duration.setText(currentMusic.getDuration());
         Glide.with(context).load(currentMusic.getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                .into(holder.poster);

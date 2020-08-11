@@ -30,14 +30,15 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="Hello"
-                android:textColor="#fff"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:id="@+id/title"/>
+                android:fontFamily="sans-serif"
+                android:textColor="#fff" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -47,6 +48,8 @@
                 android:textColor="#fff"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:id="@+id/artist"
+                android:fontFamily="sans-serif"
+
                 />
         </LinearLayout>
 

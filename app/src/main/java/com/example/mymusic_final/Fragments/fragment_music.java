@@ -122,7 +122,8 @@ public class fragment_music extends Fragment  {
             //for sidebar scroll alphabetically
             MaterialScrollBar materialScrollBar = new MaterialScrollBar(getContext(), recyclerView);
             materialScrollBar.addSectionIndicator(getContext());
-
+            materialScrollBar.setAutoHide(true);
+            materialScrollBar.setTextColour(R.color.black);
         });
 
 
