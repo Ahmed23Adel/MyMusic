@@ -36,22 +36,22 @@
 
 
     <LinearLayout
+        android:id="@+id/bottom_player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#000"
         android:layout_gravity="bottom"
-        >
-
+        android:background="#000">
 
 
         <ImageView
             android:id="@+id/poster_home"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:background="#000"
-            android:src="@drawable/audio_track"
-            />
+            android:src="@drawable/audio_track" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,41 +60,42 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/title_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Hello"
-                android:maxLines="1"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:ellipsize="end"
                 android:inputType="text"
-                android:textColor="#fff"
+                android:maxLines="1"
+                android:text="Hello"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:id="@+id/title_home"/>
+                android:textColor="#fff" />
 
             <TextView
+                android:id="@+id/artist_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Adele"
-                android:maxLines="1"
-                android:inputType="text"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:ellipsize="end"
-                android:textColor="#fff"
+                android:inputType="text"
+                android:maxLines="1"
+                android:text="Adele"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:id="@+id/artist_home"
-                />
+                android:textColor="#fff" />
         </LinearLayout>
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/audio_pause"
             android:layout_gravity="center"
-            android:layout_margin="16dp"
-            />
-
-
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/pause_red" />
 
 
     </LinearLayout>
