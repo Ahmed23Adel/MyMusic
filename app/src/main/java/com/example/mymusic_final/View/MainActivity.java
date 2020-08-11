@@ -1,15 +1,21 @@
 package com.example.mymusic_final.View;
 
+import android.Manifest;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.mymusic_final.R;
+import com.example.mymusic_final.util.Stored_music;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,5 +42,9 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
     }
+
+
 }
