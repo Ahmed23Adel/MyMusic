@@ -1,18 +1,28 @@
 package com.example.mymusic_final.util;
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.mymusic_final.Pojo.Music_item;
 
+import java.io.FileDescriptor;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +51,15 @@ public class Stored_music {
                     String title=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                     String artist=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                     String duration=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
+
+                     Uri sArtworkUri = Uri
+                            .parse("content://media/external/audio/albumart");
+
+
+                    Uri uri2 = ContentUris.withAppendedId(sArtworkUri,
+                            cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
+                    music.setAlbumArt(uri2);
+
                     music.setMusic_title(title);
                     music.setArtist(artist);
                     music.setFav(false);
@@ -52,7 +71,7 @@ public class Stored_music {
                 emitter.onNext(listOfSongs);
 
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(o->{
+        }).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe(o->{
             music.setValue((List)o);
         });
         return  music;
@@ -64,5 +83,22 @@ public class Stored_music {
     }
 
 
+    public static Bitmap getAlbumart(Context context,Long album_id){
+        Bitmap bm = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        try{
+            final Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+            Uri uri = ContentUris.withAppendedId(sArtworkUri, album_id);
+            ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "r");
+            if (pfd != null){
+                FileDescriptor fd = pfd.getFileDescriptor();
+                bm = BitmapFactory.decodeFileDescriptor(fd, null, options);
+                pfd = null;
+                fd = null;
+            }
+        } catch(Error ee){}
+        catch (Exception e) {}
+        return bm;
+    }
 
 }

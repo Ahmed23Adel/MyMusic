@@ -38,7 +38,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  * Use the {@link fragment_music#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_music extends Fragment {
+public class fragment_music extends Fragment  {
 
 
     private final int requestCode_readExternalStorage=1;
@@ -123,11 +123,12 @@ public class fragment_music extends Fragment {
     }
 
     public void showMusic(){
+
         Stored_music.getListOfSongs(getContext()).observe(getActivity(),music_items ->{
             LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setHasFixedSize(true);
-            adapter_music adapterMusic= new adapter_music().setListOfSongs(music_items);
+            adapter_music adapterMusic= new adapter_music().setListOfSongs(music_items).setContext(getContext());
             recyclerView.setAdapter(adapterMusic);
         });
 
