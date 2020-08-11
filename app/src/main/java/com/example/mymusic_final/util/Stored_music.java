@@ -20,9 +20,6 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.mymusic_final.Pojo.Music_item;
-
-import java.io.FileDescriptor;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +28,6 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class Stored_music {
@@ -82,23 +77,5 @@ public class Stored_music {
         return context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED;
     }
 
-
-    public static Bitmap getAlbumart(Context context,Long album_id){
-        Bitmap bm = null;
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        try{
-            final Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-            Uri uri = ContentUris.withAppendedId(sArtworkUri, album_id);
-            ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "r");
-            if (pfd != null){
-                FileDescriptor fd = pfd.getFileDescriptor();
-                bm = BitmapFactory.decodeFileDescriptor(fd, null, options);
-                pfd = null;
-                fd = null;
-            }
-        } catch(Error ee){}
-        catch (Exception e) {}
-        return bm;
-    }
 
 }

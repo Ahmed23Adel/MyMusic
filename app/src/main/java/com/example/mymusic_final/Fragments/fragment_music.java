@@ -6,30 +6,18 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
 import com.example.mymusic_final.Adapter.adapter_music;
-import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.util.Stored_music;
-import com.example.mymusic_final.util.Util;
-import com.example.mymusic_final.util.Util.Background;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-import java.util.Random;
+import com.turingtechnologies.materialscrollbar.MaterialScrollBar;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -130,6 +118,11 @@ public class fragment_music extends Fragment  {
             recyclerView.setHasFixedSize(true);
             adapter_music adapterMusic= new adapter_music().setListOfSongs(music_items).setContext(getContext());
             recyclerView.setAdapter(adapterMusic);
+
+            //for sidebar scroll alphabetically
+            MaterialScrollBar materialScrollBar = new MaterialScrollBar(getContext(), recyclerView);
+            materialScrollBar.addSectionIndicator(getContext());
+
         });
 
 

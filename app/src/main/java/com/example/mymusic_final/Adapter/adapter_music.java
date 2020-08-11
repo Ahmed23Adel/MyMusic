@@ -18,12 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
+import com.turingtechnologies.materialscrollbar.INameableAdapter;
 
 import java.io.FileDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder> {
+public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder> implements INameableAdapter {
 
     List<Music_item> listOfSongs;
     Context context;
@@ -51,13 +52,18 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
         holder.title.setText(currentMusic.getMusic_title());
         holder.artist.setText(currentMusic.getArtist());
         holder.duration.setText(currentMusic.getDuration());
-        Glide.with(context).load(currentMusic.getAlbumArt()).error(R.drawable.audio_track)
+        Glide.with(context).load(currentMusic.getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                .into(holder.poster);
     }
 
     @Override
     public int getItemCount() {
         return listOfSongs.size();
+    }
+
+    @Override
+    public Character getCharacterForElement(int element) {
+        return Character.valueOf(listOfSongs.get(element).getMusic_title().charAt(0));
     }
 
     public class itemHolder extends RecyclerView.ViewHolder{
@@ -75,29 +81,5 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
         }
     }
 
-    public static Bitmap getAlbumart(Context context, Long album_id){
-        final Bitmap[] bm = {null};
-        Thread thread= new Thread(new Runnable() {
-            @Override
-            public void run() {
 
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                try{
-                    final Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-                    Uri uri = ContentUris.withAppendedId(sArtworkUri, album_id);
-                    ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "r");
-                    if (pfd != null){
-                        FileDescriptor fd = pfd.getFileDescriptor();
-                        bm[0] = BitmapFactory.decodeFileDescriptor(fd, null, options);
-                        //context.notifyAll();
-                        pfd = null;
-                        fd = null;
-                    }
-                } catch(Error ee){}
-                catch (Exception e) {}
-
-            }
-        });
-        return bm[0];
-    }
 }

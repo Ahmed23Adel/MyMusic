@@ -58,4 +58,9 @@ dependencies {
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
     implementation "android.arch.lifecycle:extensions:1.1.0"
+
+    //sidebar scroll alphabetically
+    implementation 'com.turingtechnologies.materialscrollbar:lib:3.+'
+
+
 }
