@@ -51,7 +51,7 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
         holder.title.setText(currentMusic.getMusic_title());
         holder.artist.setText(currentMusic.getArtist());
         holder.duration.setText(currentMusic.getDuration());
-        Glide.with(context).load(currentMusic.getAlbumArt()).error(R.drawable.test)
+        Glide.with(context).load(currentMusic.getAlbumArt()).error(R.drawable.audio_track)
                .into(holder.poster);
     }
 
