@@ -124,6 +124,8 @@ public class fragment_music extends Fragment  {
             materialScrollBar.addSectionIndicator(getContext());
             materialScrollBar.setAutoHide(true);
             materialScrollBar.setTextColour(R.color.black);
+
+
         });
 
 

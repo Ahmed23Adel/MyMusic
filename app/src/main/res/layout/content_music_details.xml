@@ -91,6 +91,36 @@
                 android:textColor="#fff"
                 />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1:20"
+                android:textColor="#fff"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:id="@+id/durationPlayed"
+                />
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/durationPlayed"
+                android:layout_weight="1"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4:5"
+                android:textColor="#fff"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:id="@+id/durationStill"
+                />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -117,7 +147,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            >
 
             <ImageView
                 android:layout_width="0dp"

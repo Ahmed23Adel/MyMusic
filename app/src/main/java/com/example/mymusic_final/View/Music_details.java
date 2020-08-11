@@ -1,4 +1,4 @@
-package com.example.mymusic_final;
+package com.example.mymusic_final.View;
 
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.mymusic_final.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 

@@ -2,6 +2,7 @@ package com.example.mymusic_final.Adapter;
 
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
+import com.example.mymusic_final.View.Music_details;
 import com.turingtechnologies.materialscrollbar.INameableAdapter;
 
 import java.io.FileDescriptor;
@@ -28,6 +30,7 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
 
     List<Music_item> listOfSongs;
     Context context;
+
 
     public adapter_music setContext(Context context) {
         this.context = context;
@@ -59,6 +62,13 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
         holder.duration.setText(currentMusic.getDuration());
         Glide.with(context).load(currentMusic.getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                .into(holder.poster);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(context, Music_details.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -83,8 +93,36 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
             artist=itemView.findViewById(R.id.artist);
             duration=itemView.findViewById(R.id.duration);
             poster=itemView.findViewById(R.id.poster);
+            /*if (listener!=null){
+                title.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        OnMusicClicked(title,listener);
+                        OnMusicClicked(artist,listener);
+                        OnMusicClicked(duration,listener);
+                        OnMusicClicked(poster,listener);
+                        listener.onItemClick();
+                    }
+                });
+            }*/
         }
     }
 
+    /*public interface OnItemClickListener{
+        void onItemClick();
+    }
 
+    public void setListener(OnItemClickListener listener)
+    {
+        this.listener=listener;
+    }
+
+    private void OnMusicClicked(View view,OnItemClickListener listener){
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick();
+            }
+        });
+    }*/
 }
