@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
+import com.example.mymusic_final.Services.Music_player;
 import com.example.mymusic_final.View.Music_details;
 import com.example.mymusic_final.util.Constants;
 import com.turingtechnologies.materialscrollbar.INameableAdapter;
@@ -31,6 +33,7 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
 
     List<Music_item> listOfSongs;
     Context context;
+    public static int position;
 
 
     public adapter_music setContext(Context context) {
@@ -66,9 +69,18 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent MusicServiceIntent= new Intent(context, Music_player.class);
+                context.startService(MusicServiceIntent);
+
+
                 Intent intent= new Intent(context, Music_details.class);
                 intent.putExtra(Constants.Music.MUSIC_POSITION,position);
                 context.startActivity(intent);
+
+                Music_details.position=position;
+                Music_details.listOfSongs=listOfSongs;
+
+
             }
         });
     }

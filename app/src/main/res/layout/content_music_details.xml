@@ -29,13 +29,13 @@
             />
 
         <ImageView
+            android:id="@+id/favorite"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/favorite_off_white"
-            android:id="@+id/favorite"
-            />
+            android:src="@drawable/favorite_on" />
+
         <ImageView
             android:layout_width="0dp"
             android:layout_height="30dp"

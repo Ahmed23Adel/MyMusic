@@ -85,6 +85,19 @@ public class Music_item {
     }
 
     public String getArtistAlbum(){
-        return getAlbumName()!=null? getArtist()+"- "+getAlbumName() : getArtist();
+        if (getAlbumName()!=null){
+            if (!getArtist().equals("<unknown>")){
+                return getArtist()+"- "+getAlbumName();
+            }else{
+                return getAlbumName();
+            }
+        }else{
+            if (!getArtist().equals("<unknown>")){
+                return getArtist();
+            }else if (getArtist().equals("<unknown>")){
+                return "";
+            }
+        }
+        return "";
     }
 }

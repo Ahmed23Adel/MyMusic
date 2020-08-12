@@ -1,5 +1,6 @@
 package com.example.mymusic_final.View;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -10,6 +11,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
+import com.example.mymusic_final.Services.Music_player;
 import com.example.mymusic_final.databinding.ActivityMusicDetailsBinding;
 import com.example.mymusic_final.util.Constants;
 import com.example.mymusic_final.util.Stored_music;
@@ -38,8 +40,8 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 public class Music_details extends AppCompatActivity {
 
     private ActivityMusicDetailsBinding binding;
-    private  Integer position;
-    private List<Music_item> listOfSongs;
+    public static Integer position;
+    public static List<Music_item> listOfSongs;
     private Uri uri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,21 +60,7 @@ public class Music_details extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
-        Glide.with(this)
-                .load(R.drawable.backgrouns_13)
-                .apply(bitmapTransform(new BlurTransformation(50, 5)))
-                .into(new CustomTarget<Drawable>() {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        binding.includedMusic.wholeBackground.setBackground(resource);
-                    }
 
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-
-                    }
-                });
     }
 
     public int getPosition(){
@@ -112,5 +100,8 @@ public class Music_details extends AppCompatActivity {
 
                     }
                 });
+
+        Intent intent= new Intent(this, Music_player.class);
+        startService(intent);
     }
 }
