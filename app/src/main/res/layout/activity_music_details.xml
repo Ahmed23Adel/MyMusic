@@ -20,7 +20,9 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 -->
-    <include layout="@layout/content_music_details" />
+    <include layout="@layout/content_music_details"
+        android:id="@+id/includedMusic"
+        />
 
 
 

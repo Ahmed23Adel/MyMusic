@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.View.Music_details;
+import com.example.mymusic_final.util.Constants;
 import com.turingtechnologies.materialscrollbar.INameableAdapter;
 
 import java.io.FileDescriptor;
@@ -66,6 +67,7 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(context, Music_details.class);
+                intent.putExtra(Constants.Music.MUSIC_POSITION,position);
                 context.startActivity(intent);
             }
         });

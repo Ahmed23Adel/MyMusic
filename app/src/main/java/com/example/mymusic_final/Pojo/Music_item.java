@@ -10,17 +10,26 @@ public class Music_item {
     private String artist;
     private String duration;
     private Uri AlbumArt;
+    private String path;
+    private String albumName;
+
+    public String getAlbumName() {
+        return albumName;
+    }
+
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
 
     public Music_item() {
     }
 
-    public Music_item(String music_title, String artist, String picUri, boolean isFav,String duration,Uri AlbumArt) {
-        this.picUri = picUri;
-        this.isFav = isFav;
-        this.music_title = music_title;
-        this.artist = artist;
-        this.duration=duration;
-        this.AlbumArt= AlbumArt;
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public Uri getAlbumArt() {
@@ -73,5 +82,9 @@ public class Music_item {
 
     public void setArtist(String music_write) {
         artist = music_write;
+    }
+
+    public String getArtistAlbum(){
+        return getAlbumName()!=null? getArtist()+"- "+getAlbumName() : getArtist();
     }
 }

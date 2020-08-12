@@ -25,7 +25,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:src="@drawable/expand_red"
-
+            android:id="@+id/collapse_down"
             />
 
         <ImageView
@@ -33,26 +33,28 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/favorite_off_white" />
+            android:src="@drawable/favorite_off_white"
+            android:id="@+id/favorite"
+            />
         <ImageView
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:src="@drawable/more_red"
-
+            android:id="@+id/more"
             />
 
 
     </LinearLayout>
 
     <ImageView
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/albumArt"
         android:layout_gravity="center"
         android:layout_margin="32dp"
         android:layout_below="@id/first"
-        android:id="@+id/second"
+        android:id="@+id/albumArt"
         android:src="@drawable/backgrouns_13"
         />
     <LinearLayout
@@ -62,8 +64,9 @@
         android:layout_margin="16dp"
         android:orientation="vertical"
         android:gravity="bottom"
-        android:layout_below="@id/second"
+        android:layout_below="@id/albumArt"
         android:layout_alignParentBottom="true"
+
         >
 
 
@@ -72,6 +75,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginBottom="8dp"
+
             >
             <TextView
                 android:layout_width="match_parent"
@@ -81,15 +85,17 @@
                 android:gravity="center"
                 android:layout_marginBottom="8dp"
                 android:textColor="#fff"
+                android:id="@+id/music_title"
                 />
+
             <TextView
+                android:id="@+id/music_artist_album"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:text="Taylor swift - reputation"
                 android:gravity="center"
-                android:textColor="#fff"
-                />
+                android:text="Taylor swift - reputation"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#fff" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,6 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@+id/durationPlayed"
                 android:layout_weight="1"
+                android:id="@+id/seekBar"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -133,7 +140,9 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:src="@drawable/forward_10_red" />
+                android:src="@drawable/forward_10_red"
+                android:id="@+id/forward10"
+                />
 
             <ImageView
                 android:layout_width="0dp"
@@ -141,7 +150,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:src="@drawable/back_10_red"
-
+                android:id="@+id/back10"
                 />
         </LinearLayout>
 
@@ -156,7 +165,9 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:src="@drawable/shuffle" />
+                android:src="@drawable/shuffle"
+                android:id="@+id/shuffle"
+                />
 
             <ImageView
                 android:layout_width="0dp"
@@ -164,7 +175,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:src="@drawable/back"
-
+                android:id="@+id/previous"
                 />
 
             <ImageView
@@ -173,7 +184,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:src="@drawable/play_red"
-
+                android:id="@+id/playAndPause"
                 />
 
             <ImageView
@@ -182,7 +193,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:src="@drawable/next_red"
-
+                android:id="@+id/next"
                 />
 
             <ImageView
@@ -191,7 +202,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:src="@drawable/repeat"
-
+                android:id="@+id/repeat"
                 />
         </LinearLayout>
     </LinearLayout>

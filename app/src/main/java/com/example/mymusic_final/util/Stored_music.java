@@ -32,7 +32,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class Stored_music {
 
-    static MutableLiveData<List<Music_item>> music=new MutableLiveData<List<Music_item>>();
+    public static MutableLiveData<List<Music_item>> music=new MutableLiveData<List<Music_item>>();
 
     public static  MutableLiveData<List<Music_item>> getListOfSongs(final Context context){
         Observable.create(new ObservableOnSubscribe<Object>() {
@@ -44,6 +44,7 @@ public class Stored_music {
                         MediaStore.Audio.Media.ARTIST,
                         MediaStore.Audio.Media.DURATION,
                         MediaStore.Audio.Media.ALBUM_ID,
+                        MediaStore.Audio.Media.ALBUM,
                         MediaStore.Audio.Media.DATA
                 };
 
@@ -54,6 +55,9 @@ public class Stored_music {
                     String title=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                     String artist=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                     String duration=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
+                    String album=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
+
+                    String path=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
 
                      Uri sArtworkUri = Uri
                             .parse("content://media/external/audio/albumart");
@@ -68,6 +72,8 @@ public class Stored_music {
                     music.setFav(false);
                     music.setDuration(duration);
                     music.setPicUri(null);
+                    music.setPath(path);
+                    music.setAlbumName(album);
                     listOfSongs.add(music);
                 }
                 cursor.close();
@@ -83,6 +89,10 @@ public class Stored_music {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static boolean isExternalReadGranted(Context context){
         return context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static List<Music_item> getListOfSongs(){
+        return music.getValue();
     }
 
 
