@@ -1,13 +1,7 @@
 package com.example.mymusic_final.Adapter;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.ParcelFileDescriptor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,18 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
-import com.example.mymusic_final.Services.Music_player;
-import com.example.mymusic_final.View.Music_details;
-import com.example.mymusic_final.util.Constants;
+import com.example.mymusic_final.Services.old_Music_player;
+import com.example.mymusic_final.play_cloud.Music_player;
 import com.turingtechnologies.materialscrollbar.INameableAdapter;
 
-import java.io.FileDescriptor;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder> implements INameableAdapter {
 
-    List<Music_item> listOfSongs;
+    ArrayList<Music_item> listOfSongs;
     Context context;
     public static int position;
     private static OnItemClickListener listener;
@@ -42,7 +35,7 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
         return this;
     }
 
-    public adapter_music setListOfSongs(List<Music_item> listOfSongs) {
+    public adapter_music setListOfSongs(ArrayList<Music_item> listOfSongs) {
         this.listOfSongs = listOfSongs;
         return this;
     }
@@ -70,11 +63,16 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Music_player.position=position;
-                Music_player.listOfSongs=listOfSongs;
+                Music_player.setPosition(position);
+                Music_player.setListOfSongs(listOfSongs);
+
+                //Music_player.listOfSongs=listOfSongs;
                 Intent MusicServiceIntent= new Intent(context, Music_player.class);
                 context.startService(MusicServiceIntent);
 
+
+                //Music_player.init();
+                Music_player.getObject().playAtPosition(position);
 
                 /*Intent intent= new Intent(context, Music_details.class);
                 intent.putExtra(Constants.Music.MUSIC_POSITION,position);

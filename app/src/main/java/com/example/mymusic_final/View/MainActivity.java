@@ -9,10 +9,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.mymusic_final.Adapter.adapter_music;
-import com.example.mymusic_final.Fragments.fragment_music;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
-import com.example.mymusic_final.Services.Music_player;
+import com.example.mymusic_final.Services.old_Music_player;
 import com.example.mymusic_final.databinding.ActivityMainBinding;
 import com.google.android.material.tabs.TabLayout;
 
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
-        if (Music_player.isPlaying()){
+        if (old_Music_player.isPlaying()){
             binding.playAndPauseHome.setImageResource(R.drawable.pause_red);
         }else{
             binding.playAndPauseHome.setImageResource(R.drawable.play_red);
@@ -103,13 +102,13 @@ public class MainActivity extends AppCompatActivity {
         binding.playAndPauseHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Music_player.isPlaying()){
+                if (old_Music_player.isPlaying()){
                     binding.playAndPauseHome.setImageResource(R.drawable.play_red);
                 }else{
                     binding.playAndPauseHome.setImageResource(R.drawable.pause_red);
 
                 }
-                Music_player.changeState();
+                old_Music_player.changeState();
                 //Intent intent= new Intent(MainActivity.this, Music_details.class);
                 //startActivity(intent);
             }

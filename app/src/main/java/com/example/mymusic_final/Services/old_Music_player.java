@@ -17,7 +17,8 @@ import com.example.mymusic_final.View.Music_details;
 
 import java.util.List;
 
-public class Music_player extends IntentService {
+@Deprecated
+public class old_Music_player extends IntentService {
 
 
     public static Integer position;
@@ -45,7 +46,7 @@ public class Music_player extends IntentService {
         }
     };
 
-    public Music_player() {
+    public old_Music_player() {
         super("PlayerService");
     }
 

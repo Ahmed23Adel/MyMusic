@@ -26,7 +26,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".Services.Music_player"/>
+        <service android:name=".Services.old_Music_player"/>
+        <service android:name=".play_cloud.Music_player"/>
     </application>
 
 </manifest>

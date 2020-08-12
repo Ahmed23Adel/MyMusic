@@ -1,6 +1,5 @@
 package com.example.mymusic_final.View;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -12,27 +11,18 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.mymusic_final.Adapter.adapter_music;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
-import com.example.mymusic_final.Services.Music_player;
+import com.example.mymusic_final.Services.old_Music_player;
 import com.example.mymusic_final.databinding.ActivityMusicDetailsBinding;
-import com.example.mymusic_final.util.Constants;
-import com.example.mymusic_final.util.Stored_music;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.MutableLiveData;
 
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
@@ -63,7 +53,7 @@ public class Music_details extends AppCompatActivity {
 
 
 
-        if (Music_player.isPlaying()){
+        if (old_Music_player.isPlaying()){
             binding.includedMusic.playAndPause.setImageResource(R.drawable.pause_red);
         }else{
             binding.includedMusic.playAndPause.setImageResource(R.drawable.play_red);
@@ -72,31 +62,31 @@ public class Music_details extends AppCompatActivity {
         binding.includedMusic.playAndPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Music_player.isPlaying()){
+                if (old_Music_player.isPlaying()){
                     binding.includedMusic.playAndPause.setImageResource(R.drawable.play_red);
                 }else{
                     binding.includedMusic.playAndPause.setImageResource(R.drawable.pause_red);
 
                 }
-                Music_player.changeState();
+                old_Music_player.changeState();
             }
         });
 
         binding.includedMusic.next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Music_player.playNext();
+                old_Music_player.playNext();
             }
         });
 
         binding.includedMusic.previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Music_player.playPrevious();
+                old_Music_player.playPrevious();
             }
         });
 
-        Music_player.setOnPlayChanged(new Music_player.OnPlayChanged() {
+        old_Music_player.setOnPlayChanged(new old_Music_player.OnPlayChanged() {
             @Override
             public void updatedTo(int position2) {
                 initMusicInfo(listOfSongs,position2);
@@ -107,11 +97,11 @@ public class Music_details extends AppCompatActivity {
 
 
     public  List<Music_item> getListOfSongs(){
-        return Music_player.getListOfSongs();
+        return old_Music_player.getListOfSongs();
     }
 
     public int getPosition(){
-        return Music_player.getPosition();
+        return old_Music_player.getPosition();
     }
 
 

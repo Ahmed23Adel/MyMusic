@@ -19,6 +19,8 @@ import com.example.mymusic_final.util.Stored_music;
 import com.google.android.material.snackbar.Snackbar;
 import com.turingtechnologies.materialscrollbar.MaterialScrollBar;
 
+import java.util.ArrayList;
+
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
@@ -116,7 +118,7 @@ public class fragment_music extends Fragment  {
             LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setHasFixedSize(true);
-            adapterMusic= new adapter_music().setListOfSongs(music_items).setContext(getContext());
+            adapterMusic= new adapter_music().setListOfSongs((ArrayList)music_items).setContext(getContext());
             recyclerView.setAdapter(adapterMusic);
 
             //for sidebar scroll alphabetically
