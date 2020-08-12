@@ -34,6 +34,7 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
     List<Music_item> listOfSongs;
     Context context;
     public static int position;
+    private static OnItemClickListener listener;
 
 
     public adapter_music setContext(Context context) {
@@ -73,12 +74,13 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
                 context.startService(MusicServiceIntent);
 
 
-                Intent intent= new Intent(context, Music_details.class);
+                /*Intent intent= new Intent(context, Music_details.class);
                 intent.putExtra(Constants.Music.MUSIC_POSITION,position);
-                context.startActivity(intent);
+                context.startActivity(intent);*/
 
                 Music_details.position=position;
                 Music_details.listOfSongs=listOfSongs;
+                listener.onItemClick(listOfSongs,position);
 
 
             }
@@ -122,21 +124,25 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
         }
     }
 
-    /*public interface OnItemClickListener{
-        void onItemClick();
+    public interface OnItemClickListener{
+        void onItemClick(List<Music_item> listOfMusic,int position);
     }
 
-    public void setListener(OnItemClickListener listener)
+    public static void setListener(OnItemClickListener listener2)
     {
-        this.listener=listener;
+        listener=listener2;
     }
 
-    private void OnMusicClicked(View view,OnItemClickListener listener){
+
+    /**
+     * You must call it
+     * */
+    private void OnMusicClicked(View view,OnItemClickListener listener,List<Music_item> listOfMusic,int position){
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick();
+                listener.onItemClick(listOfMusic,position);
             }
         });
-    }*/
+    }
 }

@@ -53,7 +53,7 @@ public class Music_details extends AppCompatActivity {
         //setSupportActionBar(toolbar);
 
         //binding.includedMusic.
-        position=getPosition();
+        //position=getPosition();
         listOfSongs=getListOfSongs();
         initMusicInfo(listOfSongs,position);
         getWindow().setFlags(
@@ -101,7 +101,6 @@ public class Music_details extends AppCompatActivity {
                     }
                 });
 
-        Intent intent= new Intent(this, Music_player.class);
-        startService(intent);
+       
     }
 }

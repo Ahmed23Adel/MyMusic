@@ -20,8 +20,8 @@ public class Music_player extends IntentService {
 
     private static Integer position;
     private static List<Music_item> listOfSongs;
-    private AudioManager audioManager;
-    private MediaPlayer mediaPlayer;
+    private static AudioManager audioManager;
+    private static MediaPlayer mediaPlayer;
 
     final AudioManager.OnAudioFocusChangeListener mAudioFocusChangeListener= new AudioManager.OnAudioFocusChangeListener() {
         @Override
@@ -65,6 +65,20 @@ public class Music_player extends IntentService {
             mediaPlayer=MediaPlayer.create(this, Uri.parse(listOfSongs.get(position).getPath()));
             mediaPlayer.start();
         }
+    }
+
+    public static void changeState(){
+        if (mediaPlayer.isPlaying()){
+            mediaPlayer.pause();
+        }else {
+            mediaPlayer.start();
+        }
+    }
+    public static boolean isPlaying(){
+        if (mediaPlayer==null){
+            return false;
+        }
+        return mediaPlayer.isPlaying();
     }
 
 

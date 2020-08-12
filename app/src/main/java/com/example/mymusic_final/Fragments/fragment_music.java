@@ -32,7 +32,7 @@ public class fragment_music extends Fragment  {
     private final int requestCode_readExternalStorage=1;
 
     private RecyclerView recyclerView;
-
+    private static adapter_music adapterMusic;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -116,7 +116,7 @@ public class fragment_music extends Fragment  {
             LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setHasFixedSize(true);
-            adapter_music adapterMusic= new adapter_music().setListOfSongs(music_items).setContext(getContext());
+            adapterMusic= new adapter_music().setListOfSongs(music_items).setContext(getContext());
             recyclerView.setAdapter(adapterMusic);
 
             //for sidebar scroll alphabetically
@@ -125,9 +125,10 @@ public class fragment_music extends Fragment  {
             materialScrollBar.setAutoHide(true);
             materialScrollBar.setTextColour(R.color.black);
 
-
         });
+    }
 
-
+    public static adapter_music getAdapter(){
+        return adapterMusic;
     }
 }
