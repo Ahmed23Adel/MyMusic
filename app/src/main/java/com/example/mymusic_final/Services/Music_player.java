@@ -79,15 +79,29 @@ public class Music_player extends IntentService {
     }
 
     public static void playNext(){
-        position=position+1;
-        playMusicAtPosition(position);
-        onPlayChanged.updatedTo(position);
+        if (position==listOfSongs.size()-1){
+            position=0;
+            playMusicAtPosition(position);
+            onPlayChanged.updatedTo(position);
+        }else{
+            position=position+1;
+            playMusicAtPosition(position);
+            onPlayChanged.updatedTo(position);
+        }
+
     }
 
     public static void playPrevious(){
-        position=position-1;
-        playMusicAtPosition(position);
-        onPlayChanged.updatedTo(position);
+        if (position==0){
+            position=listOfSongs.size()-1;
+            playMusicAtPosition(position);
+            onPlayChanged.updatedTo(position);
+        }else{
+            position=position-1;
+            playMusicAtPosition(position);
+            onPlayChanged.updatedTo(position);
+        }
+
     }
 
     private static void playMusicAtPosition(int position){
