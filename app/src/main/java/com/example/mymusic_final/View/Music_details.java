@@ -9,6 +9,7 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.mymusic_final.Adapter.adapter_music;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.Services.Music_player;
@@ -40,6 +41,7 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 public class Music_details extends AppCompatActivity {
 
     private ActivityMusicDetailsBinding binding;
+    //position is get assigned from adapter
     public static Integer position;
     public static List<Music_item> listOfSongs;
     private Uri uri;
@@ -49,37 +51,77 @@ public class Music_details extends AppCompatActivity {
         binding= ActivityMusicDetailsBinding.inflate(getLayoutInflater());
         View root=binding.getRoot();
         setContentView(root);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
-        //binding.includedMusic.
-        //position=getPosition();
-        listOfSongs=getListOfSongs();
-        initMusicInfo(listOfSongs,position);
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
 
+        listOfSongs=getListOfSongs();
+        position=getPosition();
+        initMusicInfo(listOfSongs,position);
+
+
+
+        if (Music_player.isPlaying()){
+            binding.includedMusic.playAndPause.setImageResource(R.drawable.pause_red);
+        }else{
+            binding.includedMusic.playAndPause.setImageResource(R.drawable.play_red);
+
+        }
+        binding.includedMusic.playAndPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Music_player.isPlaying()){
+                    binding.includedMusic.playAndPause.setImageResource(R.drawable.play_red);
+                }else{
+                    binding.includedMusic.playAndPause.setImageResource(R.drawable.pause_red);
+
+                }
+                Music_player.changeState();
+            }
+        });
+
+        binding.includedMusic.next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Music_player.playNext();
+            }
+        });
+
+        binding.includedMusic.previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Music_player.playPrevious();
+            }
+        });
+
+        Music_player.setOnPlayChanged(new Music_player.OnPlayChanged() {
+            @Override
+            public void updatedTo(int position2) {
+                initMusicInfo(listOfSongs,position2);
+            }
+        });
+
+    }
+
+
+    public  List<Music_item> getListOfSongs(){
+        return Music_player.getListOfSongs();
     }
 
     public int getPosition(){
-        return getIntent().getIntExtra(Constants.Music.MUSIC_POSITION,-1);
+        return Music_player.getPosition();
     }
 
-    public  List<Music_item> getListOfSongs(){
-        return Stored_music.getListOfSongs();
-    }
 
-    public void initSong(){
-
-    }
 
     public Uri getUri(List<Music_item> listOfSongs,Integer position){
         return Uri.parse(listOfSongs.get(position).getPath());
     }
 
     public void initMusicInfo(List<Music_item> listOfSongs,Integer position){
+        adapter_music.getListener().onItemClick(listOfSongs,position);
         binding.includedMusic.musicTitle.setText(listOfSongs.get(position).getMusic_title());
         binding.includedMusic.musicArtistAlbum.setText(listOfSongs.get(position).getArtistAlbum());
         Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
@@ -101,6 +143,6 @@ public class Music_details extends AppCompatActivity {
                     }
                 });
 
-       
+
     }
 }

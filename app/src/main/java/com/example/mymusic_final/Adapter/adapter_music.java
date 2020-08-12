@@ -70,6 +70,8 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Music_player.position=position;
+                Music_player.listOfSongs=listOfSongs;
                 Intent MusicServiceIntent= new Intent(context, Music_player.class);
                 context.startService(MusicServiceIntent);
 
@@ -78,8 +80,8 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
                 intent.putExtra(Constants.Music.MUSIC_POSITION,position);
                 context.startActivity(intent);*/
 
-                Music_details.position=position;
-                Music_details.listOfSongs=listOfSongs;
+                //Music_details.position=position;
+                //Music_details.listOfSongs=listOfSongs;
                 listener.onItemClick(listOfSongs,position);
 
 
@@ -131,6 +133,10 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
     public static void setListener(OnItemClickListener listener2)
     {
         listener=listener2;
+    }
+
+    public static OnItemClickListener getListener(){
+        return listener;
     }
 
 

@@ -110,10 +110,12 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 Music_player.changeState();
-                Intent intent= new Intent(MainActivity.this, Music_details.class);
-                startActivity(intent);
+                //Intent intent= new Intent(MainActivity.this, Music_details.class);
+                //startActivity(intent);
             }
         });
+
+
 
 
     }
