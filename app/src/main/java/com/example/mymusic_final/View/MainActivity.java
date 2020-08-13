@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void updated(ArrayList<Music_item> listOfSongs, int position) {
+        binding.bottomPlayer.setVisibility(View.VISIBLE);
         Music_item currentMusic= Music_player.getListOfSongs().get(position);
         binding.titleHome.setText(currentMusic.getMusic_title());
         binding.artistHome.setText(currentMusic.getArtistAlbum());
