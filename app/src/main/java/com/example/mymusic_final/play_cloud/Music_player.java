@@ -114,12 +114,12 @@ public class Music_player extends Service implements Observable{
 
 
     public static void playAtPosition(int position) {
+
         currentState.playAtPosition(position);
         Music_changed();
     }
 
     public static void playNext() throws Exception {
-        Log.v("main","ne2");
         currentState.playNext();
         Music_changed();
     }
