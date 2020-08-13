@@ -14,9 +14,11 @@ import androidx.annotation.Nullable;
 import com.example.mymusic_final.Pojo.Music_item;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 
-public class Music_player extends Service {
+public class Music_player extends Service implements Observable{
+
 
     private static Music_player self = null;
 
@@ -29,7 +31,6 @@ public class Music_player extends Service {
     public static int position;
     public static ArrayList<Music_item> listOfSongs;
     public static Context mContext;
-
 
     static AudioManager.OnAudioFocusChangeListener mAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
         @Override
@@ -110,6 +111,7 @@ public class Music_player extends Service {
 
     public static void playAtPosition(int position) {
         currentState.playAtPosition(position);
+        Music_changed();
     }
 
     public static void playNext() throws Exception {
@@ -133,7 +135,13 @@ public class Music_player extends Service {
     }
 
     public static void continuePlaying() throws Exception {
+        Log.v("main","g2");
+
         currentState.continuePlaying();
     }
 
+
+    public static void Music_changed(){
+        Observable.notifyObservers(getListOfSongs(),position);
+    }
 }

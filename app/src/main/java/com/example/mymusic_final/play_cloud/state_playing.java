@@ -72,6 +72,7 @@ public class state_playing extends Player_state {
 
     @Override
     public void pause() {
+        setCurrentMMLeft(mediaPlayer.getCurrentPosition());
         mediaPlayer.pause();
         Music_player.setCurrentState(Music_player.state_paused);
     }

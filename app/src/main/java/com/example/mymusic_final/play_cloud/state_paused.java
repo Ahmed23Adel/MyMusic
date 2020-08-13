@@ -83,7 +83,7 @@ public class state_paused extends Player_state {
 
     @Override
     void continuePlaying() {
-        Music_player.mediaPlayer.start();
+        mediaPlayer.start();
         Music_player.setCurrentState(Music_player.state_playing);
     }
 }

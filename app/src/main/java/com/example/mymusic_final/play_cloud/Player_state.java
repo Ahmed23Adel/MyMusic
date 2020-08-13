@@ -18,6 +18,16 @@ public abstract class Player_state {
     static List<Music_item> listOfSongs=Music_player.listOfSongs;
     static int position =Music_player.position;
 
+    static int currentMMLeft=0;
+
+    public static int getCurrentMMLeft() {
+        return currentMMLeft;
+    }
+
+    public static void setCurrentMMLeft(int currentMMLeft) {
+        Player_state.currentMMLeft = currentMMLeft;
+    }
+
     abstract void playAtPosition(int position);
     abstract void playNext() throws Exception;
     abstract void playPrevious() throws Exception;
