@@ -29,13 +29,12 @@ public class state_paused extends Player_state {
     @Override
     public void playNext() {
         releaseMediaPlayer();
-        Music_player.position+=1;
-        int result=audioManager.requestAudioFocus(mAudioFocusChangeListener,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
-        if (result==AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
-            Uri currentUri=Uri.parse(listOfSongs.get(position).getPath());
-            mediaPlayer=MediaPlayer.create(mContext,currentUri);
+        Music_player.setPosition(Music_player.getPosition()+1);
+        int result = audioManager.requestAudioFocus(mAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            Uri currentUri = Uri.parse(Music_player.getListOfSongs().get(Music_player.getPosition()).getPath());
+            mediaPlayer = MediaPlayer.create(mContext, currentUri);
             mediaPlayer.start();
-            Music_player.setCurrentState(Music_player.state_playing);
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
@@ -43,17 +42,18 @@ public class state_paused extends Player_state {
                 }
             });
         }
+        Music_player.setCurrentState(Music_player.state_playing);
     }
 
     @Override
     public void playPrevious() {
-        Music_player.position-=1;
-        int result=audioManager.requestAudioFocus(mAudioFocusChangeListener,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
-        if (result==AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
-            Uri currentUri=Uri.parse(listOfSongs.get(position).getPath());
-            mediaPlayer=MediaPlayer.create(mContext,currentUri);
+        releaseMediaPlayer();
+        Music_player.setPosition(Music_player.getPosition()-1);
+        int result = audioManager.requestAudioFocus(mAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            Uri currentUri = Uri.parse(Music_player.getListOfSongs().get(Music_player.getPosition()).getPath());
+            mediaPlayer = MediaPlayer.create(mContext, currentUri);
             mediaPlayer.start();
-            Music_player.setCurrentState(Music_player.state_playing);
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
@@ -61,6 +61,7 @@ public class state_paused extends Player_state {
                 }
             });
         }
+        Music_player.setCurrentState(Music_player.state_playing);
 
     }
 

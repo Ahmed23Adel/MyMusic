@@ -122,7 +122,7 @@ public class old_Music_player extends IntentService {
                 releaseMediaPlayer();
             }
         });
-        adapter_music.getListener().onItemClick(listOfSongs,position);
+      //  adapter_music.getListener().onItemClick(listOfSongs,position);
     }
 
     private static void releaseMediaPlayer() {

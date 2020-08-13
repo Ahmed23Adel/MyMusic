@@ -41,12 +41,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     LinearLayout bottom_player;
     private ActivityMainBinding binding;
+    public static String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding=ActivityMainBinding.inflate(getLayoutInflater());
         View root= binding.getRoot();
         setContentView(root);
+
 
         Intent MusicServiceIntent= new Intent(this, Music_player.class);
         startService(MusicServiceIntent);
@@ -58,36 +60,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         tabs.setupWithViewPager(viewPager);
 
 
-        adapter_music.setListener(new adapter_music.OnItemClickListener() {
-            @Override
-            public void onItemClick(List<Music_item> listOfMusic,int position) {
-                Music_item currentMusic= listOfMusic.get(position);
-                binding.titleHome.setText(currentMusic.getMusic_title());
-                binding.artistHome.setText(currentMusic.getArtistAlbum());
-                binding.playAndPauseHome.setImageResource(R.drawable.pause_red);
-                Glide.with(MainActivity.this).load(currentMusic.getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
-                            .into(binding.albumArtHome);
-
-
-                Glide.with(MainActivity.this)
-                        .load(currentMusic.getAlbumArt())
-                        .apply(bitmapTransform(new BlurTransformation(50, 5)))
-                        .into(new CustomTarget<Drawable>() {
-                            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                            @Override
-                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                                bottom_player.setBackground(resource);
-                            }
-
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
-
-                            }
-                        });
-
-
-            }
-        });
 
         View.OnClickListener onClickListener= new View.OnClickListener() {
             @Override
@@ -96,13 +68,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 startActivity(intent);
             }
         };
-        if (old_Music_player.isPlaying()){
-            binding.playAndPauseHome.setImageResource(R.drawable.pause_red);
-        }else{
-            binding.playAndPauseHome.setImageResource(R.drawable.play_red);
-
-        }
-
         bottom_player= findViewById(R.id.bottom_player);
         bottom_player.setOnClickListener(onClickListener);
         binding.titleHome.setOnClickListener(onClickListener);
@@ -132,16 +97,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     }
                     binding.playAndPauseHome.setImageResource(R.drawable.pause_red);
                 }
-
-                /*if (old_Music_player.isPlaying()){
-                    binding.playAndPauseHome.setImageResource(R.drawable.play_red);
-                }else{
-                    binding.playAndPauseHome.setImageResource(R.drawable.pause_red);
-
-                }
-                old_Music_player.changeState();
-                //Intent intent= new Intent(MainActivity.this, Music_details.class);
-                //startActivity(intent);*/
             }
         });
     }
@@ -153,6 +108,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         binding.titleHome.setText(currentMusic.getMusic_title());
         binding.artistHome.setText(currentMusic.getArtistAlbum());
         binding.playAndPauseHome.setImageResource(R.drawable.pause_red);
+        if (Music_player.isPlaying()){
+            binding.playAndPauseHome.setImageResource(R.drawable.pause_red);
+        }else{
+            binding.playAndPauseHome.setImageResource(R.drawable.play_red);
+
+        }
         Glide.with(MainActivity.this).load(currentMusic.getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                 .into(binding.albumArtHome);
 

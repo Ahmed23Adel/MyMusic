@@ -62,6 +62,10 @@ public class Music_player extends Service implements Observable{
         Music_player.position = position;
     }
 
+    public static int getPosition() {
+        return position;
+    }
+
     public static void setListOfSongs(ArrayList<Music_item> listOfSongs) {
         Music_player.listOfSongs = listOfSongs;
     }
@@ -115,19 +119,24 @@ public class Music_player extends Service implements Observable{
     }
 
     public static void playNext() throws Exception {
+        Log.v("main","ne2");
         currentState.playNext();
+        Music_changed();
     }
 
     public static void playPrevious() throws Exception {
         currentState.playPrevious();
+        Music_changed();
     }
 
     public static void pause() throws Exception {
         currentState.pause();
+        Music_changed();
     }
 
     public static void stop() {
         currentState.stop();
+        Music_changed();
     }
 
     public static boolean isPlaying() {
@@ -135,9 +144,8 @@ public class Music_player extends Service implements Observable{
     }
 
     public static void continuePlaying() throws Exception {
-        Log.v("main","g2");
-
         currentState.continuePlaying();
+        Music_changed();
     }
 
 

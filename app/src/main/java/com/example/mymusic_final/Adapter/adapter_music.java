@@ -27,7 +27,6 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
     ArrayList<Music_item> listOfSongs;
     Context context;
     public static int position;
-    private static OnItemClickListener listener;
 
 
     public adapter_music setContext(Context context) {
@@ -66,24 +65,6 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
                 Music_player.setPosition(position);
                 Music_player.setListOfSongs(listOfSongs);
                 Music_player.playAtPosition(position);
-                //Music_player.listOfSongs=listOfSongs;
-                //Intent MusicServiceIntent= new Intent(context, Music_player.class);
-                //context.startService(MusicServiceIntent);
-
-                //Music_player.getInstance().setPosition(position);
-                //Music_player.getInstance().setListOfSongs(listOfSongs);
-
-                //Music_player.init();
-               // Music_player.getInstance().playAtPosition(position);
-
-                /*Intent intent= new Intent(context, Music_details.class);
-                intent.putExtra(Constants.Music.MUSIC_POSITION,position);
-                context.startActivity(intent);*/
-
-                //Music_details.position=position;
-                //Music_details.listOfSongs=listOfSongs;
-                //listener.onItemClick(listOfSongs,position);
-
 
             }
         });
@@ -111,44 +92,8 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
             artist=itemView.findViewById(R.id.artist);
             duration=itemView.findViewById(R.id.duration);
             poster=itemView.findViewById(R.id.poster);
-            /*if (listener!=null){
-                title.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        OnMusicClicked(title,listener);
-                        OnMusicClicked(artist,listener);
-                        OnMusicClicked(duration,listener);
-                        OnMusicClicked(poster,listener);
-                        listener.onItemClick();
-                    }
-                });
-            }*/
         }
     }
 
-    public interface OnItemClickListener{
-        void onItemClick(List<Music_item> listOfMusic,int position);
-    }
 
-    public static void setListener(OnItemClickListener listener2)
-    {
-        listener=listener2;
-    }
-
-    public static OnItemClickListener getListener(){
-        return listener;
-    }
-
-
-    /**
-     * You must call it
-     * */
-    private void OnMusicClicked(View view,OnItemClickListener listener,List<Music_item> listOfMusic,int position){
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onItemClick(listOfMusic,position);
-            }
-        });
-    }
 }

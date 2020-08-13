@@ -13,22 +13,27 @@ import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.Services.old_Music_player;
 import com.example.mymusic_final.databinding.ActivityMusicDetailsBinding;
+import com.example.mymusic_final.play_cloud.Music_player;
+import com.example.mymusic_final.play_cloud.Observable;
+import com.example.mymusic_final.play_cloud.Observer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
-public class Music_details extends AppCompatActivity {
+public class Music_details extends AppCompatActivity implements Observer {
 
     private ActivityMusicDetailsBinding binding;
     //position is get assigned from adapter
@@ -53,65 +58,72 @@ public class Music_details extends AppCompatActivity {
 
 
 
-        if (old_Music_player.isPlaying()){
-            binding.includedMusic.playAndPause.setImageResource(R.drawable.pause_red);
-        }else{
-            binding.includedMusic.playAndPause.setImageResource(R.drawable.play_red);
 
-        }
         binding.includedMusic.playAndPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (old_Music_player.isPlaying()){
+                if (Music_player.isPlaying()){
+                    try {
+                        Music_player.pause();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     binding.includedMusic.playAndPause.setImageResource(R.drawable.play_red);
                 }else{
+                    Log.v("main","g1");
+                    try {
+                        Music_player.continuePlaying();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     binding.includedMusic.playAndPause.setImageResource(R.drawable.pause_red);
-
                 }
-                old_Music_player.changeState();
             }
         });
 
         binding.includedMusic.next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                old_Music_player.playNext();
+               // old_Music_player.playNext();
+                try {
+                    Log.v("main","ne1");
+                    Music_player.playNext();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         binding.includedMusic.previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                old_Music_player.playPrevious();
+                ///old_Music_player.playPrevious();
+                try {
+                    Music_player.playPrevious();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-        old_Music_player.setOnPlayChanged(new old_Music_player.OnPlayChanged() {
-            @Override
-            public void updatedTo(int position2) {
-                initMusicInfo(listOfSongs,position2);
-            }
-        });
 
+        Observable.subscribe(this);
     }
 
 
     public  List<Music_item> getListOfSongs(){
-        return old_Music_player.getListOfSongs();
+        return Music_player.getListOfSongs();
     }
 
     public int getPosition(){
-        return old_Music_player.getPosition();
+        return Music_player.position;
     }
 
 
 
-    public Uri getUri(List<Music_item> listOfSongs,Integer position){
-        return Uri.parse(listOfSongs.get(position).getPath());
-    }
+
 
     public void initMusicInfo(List<Music_item> listOfSongs,Integer position){
-        adapter_music.getListener().onItemClick(listOfSongs,position);
         binding.includedMusic.musicTitle.setText(listOfSongs.get(position).getMusic_title());
         binding.includedMusic.musicArtistAlbum.setText(listOfSongs.get(position).getArtistAlbum());
         Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
@@ -133,6 +145,45 @@ public class Music_details extends AppCompatActivity {
                     }
                 });
 
+        if (Music_player.isPlaying()){
+            binding.includedMusic.playAndPause.setImageResource(R.drawable.pause_red);
+        }else{
+            binding.includedMusic.playAndPause.setImageResource(R.drawable.play_red);
 
+        }
+
+    }
+
+    @Override
+    public void updated(ArrayList<Music_item> listOfSongs, int position) {
+        if (!isDestroyed()) {
+            binding.includedMusic.musicTitle.setText(listOfSongs.get(position).getMusic_title());
+            binding.includedMusic.musicArtistAlbum.setText(listOfSongs.get(position).getArtistAlbum());
+            Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
+                    .into(binding.includedMusic.albumArt);
+
+            Glide.with(this)
+                    .load(listOfSongs.get(position).getAlbumArt())
+                    .apply(bitmapTransform(new BlurTransformation(50, 5)))
+                    .into(new CustomTarget<Drawable>() {
+                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            binding.includedMusic.wholeBackground.setBackground(resource);
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                        }
+                    });
+
+            if (Music_player.isPlaying()) {
+                binding.includedMusic.playAndPause.setImageResource(R.drawable.pause_red);
+            } else {
+                binding.includedMusic.playAndPause.setImageResource(R.drawable.play_red);
+
+            }
+        }
     }
 }
