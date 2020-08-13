@@ -22,13 +22,6 @@ public class state_playing extends Player_state {
         releaseMediaPlayer();
         int result = audioManager.requestAudioFocus(mAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            /*if (listOfSongs==null){
-                Log.v("main","a2");
-
-            }if (listOfSongs.get(position).getPath()==null){
-                Log.v("main","a3");
-
-            }*/
             Uri currentUri = Uri.parse(Music_player.getListOfSongs().get(position).getPath());
             mediaPlayer = MediaPlayer.create(mContext, currentUri);
             mediaPlayer.start();

@@ -1,6 +1,6 @@
 package com.example.mymusic_final.play_cloud;
 
-import android.app.IntentService;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,14 +13,14 @@ import androidx.annotation.Nullable;
 
 import com.example.mymusic_final.Pojo.Music_item;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Music_player extends Service {
 
-    private static Music_player self=null;
-    public static Music_player getObject(){
+    private static Music_player self = null;
+
+    public static Music_player getObject() {
         return self;
     }
 
@@ -31,7 +31,7 @@ public class Music_player extends Service {
     public static Context mContext;
 
 
-    static AudioManager.OnAudioFocusChangeListener mAudioFocusChangeListener= new AudioManager.OnAudioFocusChangeListener() {
+    static AudioManager.OnAudioFocusChangeListener mAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
         @Override
         public void onAudioFocusChange(int focusChange) {
             if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
@@ -47,11 +47,12 @@ public class Music_player extends Service {
 
 
         }
-    };;
+    };
+    ;
 
     public static Player_state state_idle;
     public static Player_state state_paused;
-    public static Player_state state_playing ;
+    public static Player_state state_playing;
     public static Player_state state_stopped;
     public static Player_state currentState;
 
@@ -61,20 +62,18 @@ public class Music_player extends Service {
     }
 
     public static void setListOfSongs(ArrayList<Music_item> listOfSongs) {
-        Log.v("main","a1");
         Music_player.listOfSongs = listOfSongs;
     }
+    public static ArrayList<Music_item> getListOfSongs() {
+        return listOfSongs;
+    }
+
 
     public static SoundFinishRepeatShuffle_state currentStateRepeatAndFinish;
 
     public static void setStateFinishAndRepeat(boolean repeat, boolean shuffle, boolean noShuffle) {
         currentStateRepeatAndFinish.setState(repeat, shuffle, noShuffle);
     }
-
-    public static ArrayList<Music_item> getListOfSongs() {
-        return listOfSongs;
-    }
-
     public static SoundFinishRepeatShuffle_state getCurrentStateRepeatAndFinish() {
         return currentStateRepeatAndFinish;
     }
@@ -88,26 +87,9 @@ public class Music_player extends Service {
     }
 
 
-
-
-
-    public Music_player() {
-        //super("PlayerService");
-    }
-
-    /*@Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        mContext = this;
-    }*/
-
-    public static void init(){
-
-    }
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.v("main","1");
-        //currentState = state_idle;
         setStateFinishAndRepeat(false, false, false);
         audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
         mContext = this;
@@ -115,36 +97,18 @@ public class Music_player extends Service {
         state_paused = new state_paused();
         state_playing = new state_playing();
         state_stopped = new state_stopped();
-        currentState=state_idle;
-
-    }
-
-    @Override
-    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        mContext = this;
-        Log.v("main","2");
-
-        return super.onStartCommand(intent, flags, startId);
+        currentState = state_idle;
+        currentStateRepeatAndFinish=new SoundFinishRepeatShuffle_state();
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        mContext = this;
-        Log.v("main","3");
-
         return null;
     }
 
-    @Override
-    public void onStart(@Nullable Intent intent, int startId) {
-        mContext = this;
-        super.onStart(intent, startId);
-    }
 
     public static void playAtPosition(int position) {
-        Log.v("main","4");
-
         currentState.playAtPosition(position);
     }
 
