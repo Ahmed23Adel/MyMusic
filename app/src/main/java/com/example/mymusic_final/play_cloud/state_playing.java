@@ -20,10 +20,17 @@ public class state_playing extends Player_state {
     @Override
     public void playAtPosition(int position) {
         releaseMediaPlayer();
-        int result=audioManager.requestAudioFocus(mAudioFocusChangeListener,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
-        if (result==AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
-            Uri currentUri=Uri.parse(listOfSongs.get(position).getPath());
-            mediaPlayer=MediaPlayer.create(mContext,currentUri);
+        int result = audioManager.requestAudioFocus(mAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            /*if (listOfSongs==null){
+                Log.v("main","a2");
+
+            }if (listOfSongs.get(position).getPath()==null){
+                Log.v("main","a3");
+
+            }*/
+            Uri currentUri = Uri.parse(Music_player.getListOfSongs().get(position).getPath());
+            mediaPlayer = MediaPlayer.create(mContext, currentUri);
             mediaPlayer.start();
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
@@ -32,16 +39,17 @@ public class state_playing extends Player_state {
                 }
             });
         }
+
     }
 
     @Override
     public void playNext() {
         releaseMediaPlayer();
-        Music_player.position+=1;
-        int result=audioManager.requestAudioFocus(mAudioFocusChangeListener,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
-        if (result==AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
-            Uri currentUri=Uri.parse(listOfSongs.get(position).getPath());
-            mediaPlayer=MediaPlayer.create(mContext,currentUri);
+        Music_player.position += 1;
+        int result = audioManager.requestAudioFocus(mAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            Uri currentUri = Uri.parse(listOfSongs.get(position).getPath());
+            mediaPlayer = MediaPlayer.create(mContext, currentUri);
             mediaPlayer.start();
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
@@ -54,11 +62,11 @@ public class state_playing extends Player_state {
 
     @Override
     public void playPrevious() {
-        Music_player.position-=1;
-        int result=audioManager.requestAudioFocus(mAudioFocusChangeListener,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
-        if (result==AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
-            Uri currentUri=Uri.parse(listOfSongs.get(position).getPath());
-            mediaPlayer=MediaPlayer.create(mContext,currentUri);
+        Music_player.position -= 1;
+        int result = audioManager.requestAudioFocus(mAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            Uri currentUri = Uri.parse(listOfSongs.get(position).getPath());
+            mediaPlayer = MediaPlayer.create(mContext, currentUri);
             mediaPlayer.start();
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
@@ -89,7 +97,7 @@ public class state_playing extends Player_state {
 
     @Override
     void continuePlaying() {
-        Log.v("main","I'ts already playing");
+        Log.v("main", "I'ts already playing");
     }
 
 

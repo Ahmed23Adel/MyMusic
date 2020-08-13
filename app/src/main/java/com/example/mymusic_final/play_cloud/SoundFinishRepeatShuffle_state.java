@@ -1,6 +1,6 @@
 package com.example.mymusic_final.play_cloud;
 
-public abstract class SoundFinishRepeatShuffle_state {
+public class SoundFinishRepeatShuffle_state {
 
     static Music_player musicPlayer;
 

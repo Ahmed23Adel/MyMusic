@@ -13,6 +13,7 @@ import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.Services.old_Music_player;
 import com.example.mymusic_final.databinding.ActivityMainBinding;
+import com.example.mymusic_final.play_cloud.Music_player;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         binding=ActivityMainBinding.inflate(getLayoutInflater());
         View root= binding.getRoot();
         setContentView(root);
+
+        Intent MusicServiceIntent= new Intent(this, Music_player.class);
+        startService(MusicServiceIntent);
+
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);

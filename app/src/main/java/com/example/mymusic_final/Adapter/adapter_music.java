@@ -65,14 +65,16 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
             public void onClick(View v) {
                 Music_player.setPosition(position);
                 Music_player.setListOfSongs(listOfSongs);
-
+                Music_player.playAtPosition(position);
                 //Music_player.listOfSongs=listOfSongs;
-                Intent MusicServiceIntent= new Intent(context, Music_player.class);
-                context.startService(MusicServiceIntent);
+                //Intent MusicServiceIntent= new Intent(context, Music_player.class);
+                //context.startService(MusicServiceIntent);
 
+                //Music_player.getInstance().setPosition(position);
+                //Music_player.getInstance().setListOfSongs(listOfSongs);
 
                 //Music_player.init();
-                Music_player.getObject().playAtPosition(position);
+               // Music_player.getInstance().playAtPosition(position);
 
                 /*Intent intent= new Intent(context, Music_details.class);
                 intent.putExtra(Constants.Music.MUSIC_POSITION,position);
@@ -80,7 +82,7 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
 
                 //Music_details.position=position;
                 //Music_details.listOfSongs=listOfSongs;
-                listener.onItemClick(listOfSongs,position);
+                //listener.onItemClick(listOfSongs,position);
 
 
             }

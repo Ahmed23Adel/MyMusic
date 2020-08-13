@@ -30,11 +30,30 @@ public class Music_player extends Service {
     public static ArrayList<Music_item> listOfSongs;
     public static Context mContext;
 
-    public static Player_state state_idle = new state_idle();
-    public static Player_state state_paused = new state_paused();
-    public static Player_state state_playing = new state_playing();
-    public static Player_state state_stopped = new state_stopped();
-    public static Player_state currentState=state_idle;
+
+    static AudioManager.OnAudioFocusChangeListener mAudioFocusChangeListener= new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+            if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                mediaPlayer.pause();
+            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
+
+                mediaPlayer.pause();
+            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                mediaPlayer.pause();
+            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                mediaPlayer.start();
+            }
+
+
+        }
+    };;
+
+    public static Player_state state_idle;
+    public static Player_state state_paused;
+    public static Player_state state_playing ;
+    public static Player_state state_stopped;
+    public static Player_state currentState;
 
 
     public static void setPosition(int position) {
@@ -42,6 +61,7 @@ public class Music_player extends Service {
     }
 
     public static void setListOfSongs(ArrayList<Music_item> listOfSongs) {
+        Log.v("main","a1");
         Music_player.listOfSongs = listOfSongs;
     }
 
@@ -49,6 +69,10 @@ public class Music_player extends Service {
 
     public static void setStateFinishAndRepeat(boolean repeat, boolean shuffle, boolean noShuffle) {
         currentStateRepeatAndFinish.setState(repeat, shuffle, noShuffle);
+    }
+
+    public static ArrayList<Music_item> getListOfSongs() {
+        return listOfSongs;
     }
 
     public static SoundFinishRepeatShuffle_state getCurrentStateRepeatAndFinish() {
@@ -65,7 +89,7 @@ public class Music_player extends Service {
 
 
 
-    static AudioManager.OnAudioFocusChangeListener mAudioFocusChangeListener;
+
 
     public Music_player() {
         //super("PlayerService");
@@ -86,25 +110,12 @@ public class Music_player extends Service {
         //currentState = state_idle;
         setStateFinishAndRepeat(false, false, false);
         audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-
-
-        mAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
-            @Override
-            public void onAudioFocusChange(int focusChange) {
-                if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
-                    mediaPlayer.pause();
-                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
-
-                    mediaPlayer.pause();
-                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
-                    mediaPlayer.pause();
-                } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-                    mediaPlayer.start();
-                }
-
-
-            }
-        };
+        mContext = this;
+        state_idle = new state_idle();
+        state_paused = new state_paused();
+        state_playing = new state_playing();
+        state_stopped = new state_stopped();
+        currentState=state_idle;
 
     }
 
