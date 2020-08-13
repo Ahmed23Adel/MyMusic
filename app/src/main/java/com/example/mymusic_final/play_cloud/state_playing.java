@@ -116,5 +116,10 @@ public class state_playing extends Player_state {
         Log.v("main", "I'ts already playing");
     }
 
+    @Override
+    void seekTo(int s) throws Exception {
+        mediaPlayer.seekTo(s);
+    }
+
 
 }

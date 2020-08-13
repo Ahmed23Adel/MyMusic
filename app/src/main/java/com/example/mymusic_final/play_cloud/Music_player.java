@@ -138,6 +138,9 @@ public class Music_player extends Service implements Observable{
         currentState.stop();
         Music_changed();
     }
+    public static void seekTo(int s)throws Exception{
+        currentState.seekTo(s);
+    }
 
     public static boolean isPlaying() {
         return currentState.isPlaying();

@@ -87,4 +87,9 @@ public class state_paused extends Player_state {
         mediaPlayer.start();
         Music_player.setCurrentState(Music_player.state_playing);
     }
+
+    @Override
+    void seekTo(int s) throws Exception {
+        mediaPlayer.seekTo(s);
+    }
 }

@@ -41,11 +41,24 @@ public class Music_item {
     }
 
     public String getDuration() {
-        int du=Integer.valueOf(duration);
+        /*int du=Integer.valueOf(duration);
+        du/=1000;
+        int secods= du%60;
+        int minuts=(du-secods)/60;
+        return minuts+":"+secods;*/
+        return getDuration(Integer.valueOf(duration));
+    }
+
+    public static String getDuration(int mm){
+        int du=Integer.valueOf(mm);
         du/=1000;
         int secods= du%60;
         int minuts=(du-secods)/60;
         return minuts+":"+secods;
+    }
+
+    public int getDurationMM(){
+        return Integer.valueOf(duration);
     }
 
     public void setDuration(String duration) {

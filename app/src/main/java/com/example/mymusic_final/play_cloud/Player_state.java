@@ -11,7 +11,7 @@ import java.util.List;
 
 public abstract class Player_state {
 
-    static MediaPlayer mediaPlayer;
+    public static MediaPlayer mediaPlayer;
     static AudioManager audioManager=Music_player.audioManager;
     static  AudioManager.OnAudioFocusChangeListener mAudioFocusChangeListener =Music_player.mAudioFocusChangeListener;
     static Context mContext=Music_player.mContext;
@@ -35,6 +35,7 @@ public abstract class Player_state {
     abstract void stop();
     abstract boolean isPlaying();
     abstract void continuePlaying() throws Exception;
+    abstract void seekTo(int s) throws Exception;
 
     public  void releaseMediaPlayer() {
         // If the media player is not null, then it may be currently playing a sound.

@@ -4,31 +4,32 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.example.mymusic_final.Adapter.adapter_music;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
-import com.example.mymusic_final.Services.old_Music_player;
 import com.example.mymusic_final.databinding.ActivityMusicDetailsBinding;
 import com.example.mymusic_final.play_cloud.Music_player;
 import com.example.mymusic_final.play_cloud.Observable;
 import com.example.mymusic_final.play_cloud.Observer;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.SeekBar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
@@ -126,6 +127,8 @@ public class Music_details extends AppCompatActivity implements Observer {
     public void initMusicInfo(List<Music_item> listOfSongs,Integer position){
         binding.includedMusic.musicTitle.setText(listOfSongs.get(position).getMusic_title());
         binding.includedMusic.musicArtistAlbum.setText(listOfSongs.get(position).getArtistAlbum());
+        binding.includedMusic.duration.setText(listOfSongs.get(getPosition()).getDuration());
+        binding.includedMusic.seekBar.setMax(listOfSongs.get(getPosition()).getDurationMM());
         Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                 .into(binding.includedMusic.albumArt);
 
@@ -152,13 +155,80 @@ public class Music_details extends AppCompatActivity implements Observer {
 
         }
 
+        binding.includedMusic.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                try {
+                    Music_player.seekTo(progress);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+         /*Handler mHandler = new Handler();
+        //Make sure you update Seekbar on UI thread
+        Music_details.this.runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                if(Music_player.getCurrentState().mediaPlayer != null){
+                    int mCurrentPosition = Music_player.getCurrentState().mediaPlayer .getCurrentPosition() / 1000;
+                    binding.includedMusic.seekBar.setProgress(mCurrentPosition);
+                }
+                mHandler.postDelayed(this, 1000);
+            }
+        });*/
+
+        io.reactivex.rxjava3.core.Observable.interval(1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .repeat()
+                .subscribe(aLong -> {
+                    if(Music_player.getCurrentState().mediaPlayer != null){
+                        Log.v("main","r1");
+                        int mCurrentPosition = Music_player.getCurrentState().mediaPlayer .getCurrentPosition();
+                        binding.includedMusic.seekBar.setProgress(mCurrentPosition);
+                        binding.includedMusic.durationPlayed.setText(Music_item.getDuration(mCurrentPosition));
+                    }
+                });
+
+        /* Handler mHandler = new Handler();
+        //Make sure you update Seekbar on UI thread
+        Music_details.this.runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                if(Music_player.getCurrentState().mediaPlayer != null){
+                    int mCurrentPosition = Music_player.getCurrentState().mediaPlayer .getCurrentPosition();
+                    binding.includedMusic.seekBar.setProgress(mCurrentPosition);
+                    binding.includedMusic.durationPlayed.setText(Music_item.getDuration(mCurrentPosition));
+                }
+                mHandler.postDelayed(this, 1000);
+            }
+        });*/
+
     }
+
+
 
     @Override
     public void updated(ArrayList<Music_item> listOfSongs, int position) {
         if (!isDestroyed()) {
             binding.includedMusic.musicTitle.setText(listOfSongs.get(position).getMusic_title());
             binding.includedMusic.musicArtistAlbum.setText(listOfSongs.get(position).getArtistAlbum());
+            binding.includedMusic.duration.setText(listOfSongs.get(getPosition()).getDuration());
+            binding.includedMusic.seekBar.setMax(listOfSongs.get(getPosition()).getDurationMM());
             Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                     .into(binding.includedMusic.albumArt);
 

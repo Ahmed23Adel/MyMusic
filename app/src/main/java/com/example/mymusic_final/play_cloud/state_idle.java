@@ -40,4 +40,10 @@ public class state_idle extends Player_state {
         throw  new IllegalStateException("we are in idle state, you can't continue playing");
 
     }
+
+    @Override
+    void seekTo(int s) throws Exception {
+        throw  new IllegalStateException("we are in idle state,you can't seek to");
+
+    }
 }

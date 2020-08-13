@@ -43,4 +43,9 @@ public class state_stopped extends Player_state {
         throw  new IllegalStateException("it's stopped, nothing is selected");
 
     }
+
+    @Override
+    void seekTo(int s) throws Exception {
+        throw new IllegalStateException("it's stopped, you can't seek to");
+    }
 }
