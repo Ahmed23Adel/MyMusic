@@ -38,7 +38,12 @@ public class state_playing extends Player_state {
     @Override
     public void playNext() {
         if (Music_player.getPosition() == Music_player.getListOfSongs().size() - 1) {
-            Music_player.getCurrentStateRepeatAndFinish().Next();
+            if (Music_player.getCurrentStateRepeatAndFinish() instanceof SoundFinishRepeatShuffle_SHUFFLE) {
+                Music_player.getCurrentStateRepeatAndFinish().Next();
+            } else {
+                Music_player.setPosition(-1);
+                playNext();
+            }
 
         } else {
             releaseMediaPlayer();
@@ -61,21 +66,30 @@ public class state_playing extends Player_state {
 
     @Override
     public void playPrevious() {
-        releaseMediaPlayer();
-        Music_player.setPosition(Music_player.getPosition() - 1);
-        int result = audioManager.requestAudioFocus(mAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
-        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            Uri currentUri = Uri.parse(Music_player.getListOfSongs().get(Music_player.getPosition()).getPath());
-            mediaPlayer = MediaPlayer.create(mContext, currentUri);
-            mediaPlayer.start();
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    Music_player.getCurrentStateRepeatAndFinish().Next();
-                }
-            });
-        }
+        if (Music_player.getPosition() == 0) {
+            if (Music_player.getCurrentStateRepeatAndFinish() instanceof SoundFinishRepeatShuffle_SHUFFLE) {
+                Music_player.getCurrentStateRepeatAndFinish().Next();
+            } else {
+                Music_player.setPosition(Music_player.getListOfSongs().size() );
+                playPrevious();
+            }
 
+        } else {
+            releaseMediaPlayer();
+            Music_player.setPosition(Music_player.getPosition() - 1);
+            int result = audioManager.requestAudioFocus(mAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
+            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                Uri currentUri = Uri.parse(Music_player.getListOfSongs().get(Music_player.getPosition()).getPath());
+                mediaPlayer = MediaPlayer.create(mContext, currentUri);
+                mediaPlayer.start();
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        Music_player.getCurrentStateRepeatAndFinish().Next();
+                    }
+                });
+            }
+        }
     }
 
     @Override
