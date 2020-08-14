@@ -4,9 +4,9 @@ public class SoundFinishRepeatShuffle_state {
 
     static Music_player musicPlayer;
 
-    public static final boolean REPEAT = false;
-    public static final boolean SHUFFLE = false;
-    public static final boolean NO_SHUFFLE = false;
+    public static  boolean REPEAT = false;
+    public static  boolean SHUFFLE = false;
+    public static  boolean NO_SHUFFLE = false;
 
     public static SoundFinishRepeatShuffle_state SoundFinishRepeatShuffle_NULL = new SoundFinishRepeatShuffle_NULL();
     public static SoundFinishRepeatShuffle_state SoundFinishRepeatShuffle_REPEAT = new SoundFinishRepeatShuffle_REPEAT();
@@ -20,6 +20,9 @@ public class SoundFinishRepeatShuffle_state {
     }
 
     public static void setState(boolean repeat, boolean shuffle, boolean noShuffle) {
+        REPEAT=repeat;
+        SHUFFLE=shuffle;
+        NO_SHUFFLE=noShuffle;
         if (repeat == true) {
             currentState = SoundFinishRepeatShuffle_REPEAT;
         } else if (shuffle == true && noShuffle == false) {
@@ -30,5 +33,29 @@ public class SoundFinishRepeatShuffle_state {
             currentState = SoundFinishRepeatShuffle_NULL;
 
         }
+    }
+
+    public static boolean isREPEAT() {
+        return REPEAT;
+    }
+
+    public static void setREPEAT(boolean REPEAT) {
+        SoundFinishRepeatShuffle_state.REPEAT = REPEAT;
+    }
+
+    public static boolean isSHUFFLE() {
+        return SHUFFLE;
+    }
+
+    public static void setSHUFFLE(boolean SHUFFLE) {
+        SoundFinishRepeatShuffle_state.SHUFFLE = SHUFFLE;
+    }
+
+    public static boolean isNoShuffle() {
+        return NO_SHUFFLE;
+    }
+
+    public static void setNoShuffle(boolean noShuffle) {
+        NO_SHUFFLE = noShuffle;
     }
 }

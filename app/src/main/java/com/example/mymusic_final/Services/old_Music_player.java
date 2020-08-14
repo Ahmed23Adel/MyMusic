@@ -112,7 +112,6 @@ public class old_Music_player extends IntentService {
         int result=audioManager.requestAudioFocus(mAudioFocusChangeListener,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
 
         if (result==AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
-            Log.v("main","2");
             mediaPlayer=MediaPlayer.create(mContext, Uri.parse(listOfSongs.get(position).getPath()));
             mediaPlayer.start();
         }

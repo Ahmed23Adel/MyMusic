@@ -72,7 +72,6 @@ public class Music_details extends AppCompatActivity implements Observer {
                     }
                     binding.includedMusic.playAndPause.setImageResource(R.drawable.play_red);
                 } else {
-                    Log.v("main", "g1");
                     try {
                         Music_player.continuePlaying();
                     } catch (Exception e) {
@@ -88,7 +87,6 @@ public class Music_details extends AppCompatActivity implements Observer {
             public void onClick(View v) {
                 // old_Music_player.playNext();
                 try {
-                    Log.v("main", "ne1");
                     Music_player.playNext();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -237,6 +235,40 @@ public class Music_details extends AppCompatActivity implements Observer {
 
             }
         });
+
+        binding.includedMusic.shuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE()){
+                    binding.includedMusic.shuffle.setImageResource(R.drawable.shuffle_off);
+                    Music_player.setStateFinishAndRepeat(Music_player.getCurrentStateRepeatAndFinish().isREPEAT(),false,true);
+                }else{
+                    binding.includedMusic.shuffle.setImageResource(R.drawable.shuffle);
+                    Music_player.setStateFinishAndRepeat(Music_player.getCurrentStateRepeatAndFinish().isREPEAT(),true,false);
+
+                }
+            }
+        });
+        binding.includedMusic.repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Music_player.getCurrentStateRepeatAndFinish().isREPEAT()){
+                    binding.includedMusic.repeat.setImageResource(R.drawable.repeat_off);
+                    Music_player.setStateFinishAndRepeat(false,Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE(),Music_player.getCurrentStateRepeatAndFinish().isNoShuffle());
+                }else{
+                    binding.includedMusic.repeat.setImageResource(R.drawable.repeat_one);
+                    Music_player.setStateFinishAndRepeat(true,Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE(),Music_player.getCurrentStateRepeatAndFinish().isNoShuffle());
+
+                }
+            }
+        });
+        if (Music_player.getCurrentStateRepeatAndFinish().isREPEAT()){
+            binding.includedMusic.repeat.setImageResource(R.drawable.repeat_one);
+        }
+        if (Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE()){
+            binding.includedMusic.shuffle.setImageResource(R.drawable.shuffle);
+        }
+        
 
     }
 

@@ -1,5 +1,7 @@
 package com.example.mymusic_final.play_cloud;
 
+import android.util.Log;
+
 public class SoundFinishRepeatShuffle_REPEAT extends SoundFinishRepeatShuffle_state{
 
     @Override

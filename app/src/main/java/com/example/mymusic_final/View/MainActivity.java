@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     }
                     binding.playAndPauseHome.setImageResource(R.drawable.play_red);
                 }else{
-                    Log.v("main","g1");
                     try {
                         Music_player.continuePlaying();
                     } catch (Exception e) {
