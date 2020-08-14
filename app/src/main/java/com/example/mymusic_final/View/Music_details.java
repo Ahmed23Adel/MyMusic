@@ -14,6 +14,7 @@ import com.example.mymusic_final.databinding.ActivityMusicDetailsBinding;
 import com.example.mymusic_final.play_cloud.Music_player;
 import com.example.mymusic_final.play_cloud.Observable;
 import com.example.mymusic_final.play_cloud.Observer;
+import com.example.mymusic_final.util.SwipeDetector;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,9 +22,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -268,9 +271,32 @@ public class Music_details extends AppCompatActivity implements Observer {
         if (Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE()){
             binding.includedMusic.shuffle.setImageResource(R.drawable.shuffle);
         }
-        
+        new SwipeDetector(binding.includedMusic.albumArtParent).setOnSwipeListener(new SwipeDetector.onSwipeEvent() {
+            @Override
+            public void SwipeEventDetected(View v, SwipeDetector.SwipeTypeEnum swipeType) {
+                if(swipeType==SwipeDetector.SwipeTypeEnum.LEFT_TO_RIGHT){
+
+                    try {
+                        Music_player.playPrevious();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else if (swipeType==SwipeDetector.SwipeTypeEnum.RIGHT_TO_LEFT){
+                    try {
+                        Music_player.playNext();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+                    //getActivity().onBackPressed();
+            }
+        });
 
     }
+
+
 
 
     @Override

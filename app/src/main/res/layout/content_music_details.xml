@@ -47,16 +47,22 @@
 
 
     </LinearLayout>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_below="@id/first"
+    android:id="@+id/albumArtParent"
+    >
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="@dimen/albumArt"
         android:layout_gravity="center"
         android:layout_margin="32dp"
-        android:layout_below="@id/first"
         android:id="@+id/albumArt"
         android:src="@drawable/backgrouns_13"
         />
+</LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
