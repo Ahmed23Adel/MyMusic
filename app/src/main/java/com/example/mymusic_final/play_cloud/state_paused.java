@@ -13,7 +13,7 @@ public class state_paused extends Player_state {
         releaseMediaPlayer();
         int result=audioManager.requestAudioFocus(mAudioFocusChangeListener, AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
         if (result==AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
-            Uri currentUri=Uri.parse(listOfSongs.get(position).getPath());
+            Uri currentUri=Uri.parse(Music_player.getListOfSongs().get(position).getPath());
             mediaPlayer= MediaPlayer.create(mContext,currentUri);
             mediaPlayer.start();
             Music_player.setCurrentState(Music_player.state_playing);

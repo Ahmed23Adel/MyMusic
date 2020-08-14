@@ -109,6 +109,7 @@ public class Music_details extends AppCompatActivity implements Observer {
         });
 
 
+
         Observable.subscribe(this);
 
     }
@@ -188,6 +189,55 @@ public class Music_details extends AppCompatActivity implements Observer {
                         binding.includedMusic.durationPlayed.setText(Music_item.getDuration(mCurrentPosition));
                     }
                 });
+
+
+        binding.includedMusic.forward10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Music_player.getCurrentState().mediaPlayer.isPlaying()){
+                    try {
+                        binding.includedMusic.durationPlayed.setText(Music_item.getDuration(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()+10000));
+                        Music_player.seekTo(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()+10000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    try {
+                        binding.includedMusic.durationPlayed.setText(Music_item.getDuration(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()+10000));
+                        Music_player.continuePlaying();
+                        Music_player.seekTo(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()+10000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+        });
+        binding.includedMusic.back10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               if (Music_player.getCurrentState().mediaPlayer.isPlaying()){
+                   try {
+                       binding.includedMusic.durationPlayed.setText(Music_item.getDuration(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()-10000));
+                       Music_player.seekTo(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()-10000);
+                   } catch (Exception e) {
+                       e.printStackTrace();
+                   }
+               }else{
+                   try {
+                       binding.includedMusic.durationPlayed.setText(Music_item.getDuration(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()-10000));
+                       Music_player.continuePlaying();
+                       Music_player.seekTo(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()-10000);
+
+                   } catch (Exception e) {
+                       e.printStackTrace();
+                   }
+               }
+
+            }
+        });
+
     }
 
 

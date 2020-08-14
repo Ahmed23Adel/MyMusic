@@ -140,6 +140,7 @@ public class Music_player extends Service implements Observable{
     }
     public static void seekTo(int s)throws Exception{
         currentState.seekTo(s);
+        Music_changed();
     }
 
     public static boolean isPlaying() {
