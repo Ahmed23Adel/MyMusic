@@ -4,6 +4,9 @@ public class SoundFinishRepeatShuffle_NO_SHUFFLE extends  SoundFinishRepeatShuff
 
     @Override
     public void Next() {
-        musicPlayer.getCurrentState().playAtPosition(musicPlayer.position+1);
+        Music_player.setPosition(Music_player.getPosition()+1);
+        Music_player.playAtPosition(Music_player.getPosition());
+
+        //musicPlayer.getCurrentState().playAtPosition(musicPlayer.position+1);
     }
 }

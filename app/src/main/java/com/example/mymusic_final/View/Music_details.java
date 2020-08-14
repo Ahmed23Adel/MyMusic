@@ -178,7 +178,7 @@ public class Music_details extends AppCompatActivity implements Observer {
             }
         });
 
-        io.reactivex.rxjava3.core.Observable.interval(2, TimeUnit.SECONDS)
+        io.reactivex.rxjava3.core.Observable.interval(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .repeat()

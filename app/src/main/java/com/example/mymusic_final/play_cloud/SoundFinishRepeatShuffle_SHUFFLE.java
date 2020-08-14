@@ -10,6 +10,8 @@ public class SoundFinishRepeatShuffle_SHUFFLE extends SoundFinishRepeatShuffle_s
         int min=0;
         Random random= new Random();
         int rand=random.nextInt((max-min)+1)+min;
-        Music_player.getCurrentState().playAtPosition(rand);
+        Music_player.setPosition(rand);
+        Music_player.playAtPosition(Music_player.getPosition());
+//        Music_player.getCurrentState().playAtPosition(rand);
     }
 }
