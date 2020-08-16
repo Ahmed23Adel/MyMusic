@@ -20,6 +20,8 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.mymusic_final.Pojo.Music_item;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +41,16 @@ public class Stored_music {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Object> emitter) throws Throwable {
                 Uri uri= MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                Log.v("main",String.valueOf(uri));
                 String[] projection={
                         MediaStore.Audio.Media.TITLE,
                         MediaStore.Audio.Media.ARTIST,
                         MediaStore.Audio.Media.DURATION,
                         MediaStore.Audio.Media.ALBUM_ID,
                         MediaStore.Audio.Media.ALBUM,
-                        MediaStore.Audio.Media.DATA
+                        MediaStore.Audio.Media.DATA,
+                        MediaStore.Audio.Media._ID
+
                 };
 
                 Cursor cursor=context.getContentResolver().query(uri,projection,MediaStore.Audio.Media.IS_MUSIC+"!=0",null,null);
@@ -56,7 +61,10 @@ public class Stored_music {
                     String artist=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                     String duration=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
                     String album=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
+                    Integer id=cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
 
+                    //Log.v("main","i ");
+                   //Log.v("main","i "+cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID)));
                     String path=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
 
                      Uri sArtworkUri = Uri
@@ -74,6 +82,7 @@ public class Stored_music {
                     music.setPicUri(null);
                     music.setPath(path);
                     music.setAlbumName(album);
+                    music.set_ID(id);
                     listOfSongs.add(music);
                 }
                 cursor.close();
@@ -95,5 +104,9 @@ public class Stored_music {
         return music.getValue();
     }
 
+    public static void deleteSongAtID(Context context,int id){
+        Uri uri= MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        context.getContentResolver().delete(uri,MediaStore.Audio.Media._ID+"="+id,null);
+    }
 
 }

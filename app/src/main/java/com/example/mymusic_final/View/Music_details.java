@@ -1,5 +1,6 @@
 package com.example.mymusic_final.View;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -14,6 +15,7 @@ import com.example.mymusic_final.databinding.ActivityMusicDetailsBinding;
 import com.example.mymusic_final.play_cloud.Music_player;
 import com.example.mymusic_final.play_cloud.Observable;
 import com.example.mymusic_final.play_cloud.Observer;
+import com.example.mymusic_final.util.Stored_music;
 import com.example.mymusic_final.util.SwipeDetector;
 
 import androidx.annotation.NonNull;
@@ -326,13 +328,16 @@ public class Music_details extends AppCompatActivity implements Observer {
         });
 
         initClickingMoreOptions();
+
     }
 
     private void initClickingMoreOptions() {
+        Context self= this;
         binding.includedMusic.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Stored_music.deleteSongAtID(self,Music_player.getListOfSongs().get(Music_player.getPosition()).get_ID());
+                MoreActionDone();
             }
         });
         binding.includedMusic.goAlbum.setOnClickListener(new View.OnClickListener() {
@@ -365,6 +370,16 @@ public class Music_details extends AppCompatActivity implements Observer {
 
             }
         });
+    }
+
+    private void MoreActionDone() {
+        binding.includedMusic.moreOptionsMenu.setVisibility(View.GONE);
+        isSpinnerVisible=false;
+        try {
+            Music_player.playNext();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

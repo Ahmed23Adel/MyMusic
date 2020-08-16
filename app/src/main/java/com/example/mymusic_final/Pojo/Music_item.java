@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 
 public class Music_item {
+    private int _ID;
     private String picUri;
     private boolean isFav;
     private String music_title;
@@ -12,6 +13,14 @@ public class Music_item {
     private Uri AlbumArt;
     private String path;
     private String albumName;
+
+    public int get_ID() {
+        return _ID;
+    }
+
+    public void set_ID(int _ID) {
+        this._ID = _ID;
+    }
 
     public String getAlbumName() {
         return albumName;
