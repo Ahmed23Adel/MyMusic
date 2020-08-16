@@ -25,6 +25,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -45,6 +47,7 @@ public class Music_details extends AppCompatActivity implements Observer {
     public static Integer position;
     public static List<Music_item> listOfSongs;
     private Uri uri;
+    boolean isSpinnerVisible=false;
 
 
     @Override
@@ -271,6 +274,8 @@ public class Music_details extends AppCompatActivity implements Observer {
         if (Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE()){
             binding.includedMusic.shuffle.setImageResource(R.drawable.shuffle);
         }
+
+        //I detect the swipe, so it it's right it will go to the next song
         new SwipeDetector(binding.includedMusic.albumArtParent).setOnSwipeListener(new SwipeDetector.onSwipeEvent() {
             @Override
             public void SwipeEventDetected(View v, SwipeDetector.SwipeTypeEnum swipeType) {
@@ -294,9 +299,73 @@ public class Music_details extends AppCompatActivity implements Observer {
             }
         });
 
+        binding.includedMusic.spinnerMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isSpinnerVisible) {
+                    binding.includedMusic.moreOptionsMenu.setVisibility(View.VISIBLE);
+                    binding.includedMusic.dummyImageView.setVisibility(View.VISIBLE);
+                    isSpinnerVisible=true;
+                }else{
+                    binding.includedMusic.moreOptionsMenu.setVisibility(View.GONE);
+                    binding.includedMusic.dummyImageView.setVisibility(View.GONE);
+                    isSpinnerVisible=false;
+
+                }
+            }
+        });
+
+        //as when clicking outside of layout of more option it will disappear
+        binding.includedMusic.dummyImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.includedMusic.moreOptionsMenu.setVisibility(View.GONE);
+                binding.includedMusic.dummyImageView.setVisibility(View.GONE);
+                isSpinnerVisible=false;
+            }
+        });
+
+        initClickingMoreOptions();
     }
 
+    private void initClickingMoreOptions() {
+        binding.includedMusic.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
+        binding.includedMusic.goAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        binding.includedMusic.goArtist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        binding.includedMusic.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        binding.includedMusic.editor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        binding.includedMusic.details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
 
 
     @Override
@@ -333,4 +402,6 @@ public class Music_details extends AppCompatActivity implements Observer {
             }
         }
     }
+
+
 }

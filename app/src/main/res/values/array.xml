@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinnerMore">
+        <item>Delete</item>
+        <item>Go to album</item>
+        <item>Go to artist</item>
+        <item>Share</item>
+        <item>Editor</item>
+        <item>Details</item>
+
+    </string-array>
+</resources>
