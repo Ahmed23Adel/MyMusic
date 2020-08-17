@@ -115,7 +115,8 @@ public class fragment_music extends Fragment  {
     public void showMusic(){
 
         Stored_music.getListOfSongs(getContext()).observe(getActivity(),music_items ->{
-            LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext());
+            setRecyclerView((ArrayList) music_items);
+           /* LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setHasFixedSize(true);
             adapterMusic= new adapter_music().setListOfSongs((ArrayList)music_items).setContext(getContext());
@@ -125,9 +126,31 @@ public class fragment_music extends Fragment  {
             MaterialScrollBar materialScrollBar = new MaterialScrollBar(getContext(), recyclerView);
             materialScrollBar.addSectionIndicator(getContext());
             materialScrollBar.setAutoHide(true);
-            materialScrollBar.setTextColour(R.color.black);
+            materialScrollBar.setTextColour(R.color.black);*/
 
         });
+
+        Stored_music.setListener(new Stored_music.onDataChanged() {
+            @Override
+            public void dataChanged() {
+                recyclerView.setAdapter(null);
+                showMusic();
+            }
+        });
+    }
+
+    void setRecyclerView(ArrayList music_items){
+        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
+        adapterMusic= new adapter_music().setListOfSongs(music_items).setContext(getContext());
+        recyclerView.setAdapter(adapterMusic);
+
+        //for sidebar scroll alphabetically
+        MaterialScrollBar materialScrollBar = new MaterialScrollBar(getContext(), recyclerView);
+        materialScrollBar.addSectionIndicator(getContext());
+        materialScrollBar.setAutoHide(true);
+        materialScrollBar.setTextColour(R.color.black);
     }
 
     public static adapter_music getAdapter(){
