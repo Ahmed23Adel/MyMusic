@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.mymusic_final.Observing.Observable_Stored_music;
 import com.example.mymusic_final.Pojo.Music_item;
 
 import java.util.ArrayList;
@@ -26,10 +27,9 @@ import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class Stored_music {
+public class Stored_music implements Observable_Stored_music {
 
     public static MutableLiveData<List<Music_item>> music = new MutableLiveData<List<Music_item>>();
-    private static onDataChanged listener;
 
     public static MutableLiveData<List<Music_item>> getListOfSongs(final Context context) {
         Observable.create(new ObservableOnSubscribe<Object>() {
@@ -102,18 +102,10 @@ public class Stored_music {
     public static void deleteSongAtID(Context context, int id) {
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         context.getContentResolver().delete(uri, MediaStore.Audio.Media._ID + "=" + id, null);
-        if (listener != null) {
-            listener.dataChanged();
-        }
+        Observable_Stored_music.notifyObservers();
     }
 
 
-    public interface onDataChanged {
-        void dataChanged();
-    }
 
-    public static void setListener(onDataChanged listener2) {
-        listener = listener2;
-    }
 
 }

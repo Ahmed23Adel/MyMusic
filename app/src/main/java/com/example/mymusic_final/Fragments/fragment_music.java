@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.mymusic_final.Adapter.adapter_music;
+import com.example.mymusic_final.Observing.Observable_Stored_music;
+import com.example.mymusic_final.Observing.Observer_Stored_music;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.util.Stored_music;
 import com.google.android.material.snackbar.Snackbar;
@@ -28,7 +30,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  * Use the {@link fragment_music#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_music extends Fragment  {
+public class fragment_music extends Fragment implements Observer_Stored_music {
 
 
     private final int requestCode_readExternalStorage=1;
@@ -79,6 +81,7 @@ public class fragment_music extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Observable_Stored_music.subscribe(this);
         // Inflate the layout for this fragment
         View root =inflater.inflate(R.layout.fragment_music, container, false);
         recyclerView= root.findViewById(R.id.music_recycler_view);
@@ -130,15 +133,14 @@ public class fragment_music extends Fragment  {
 
         });
 
-        Stored_music.setListener(new Stored_music.onDataChanged() {
-            @Override
-            public void dataChanged() {
-                recyclerView.setAdapter(null);
-                showMusic();
-            }
-        });
-    }
 
+    }
+    //for Stored_Music observer
+    @Override
+    public void updated() {
+        recyclerView.setAdapter(null);
+        showMusic();
+    }
     void setRecyclerView(ArrayList music_items){
         LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);

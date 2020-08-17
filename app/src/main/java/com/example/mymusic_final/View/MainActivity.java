@@ -9,6 +9,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.mymusic_final.Adapter.adapter_music;
+import com.example.mymusic_final.Observing.Observable_Stored_music;
+import com.example.mymusic_final.Observing.Observer_Stored_music;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.Services.old_Music_player;
@@ -37,7 +39,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
-public class MainActivity extends AppCompatActivity implements Observer {
+public class MainActivity extends AppCompatActivity implements Observer  {
 
     LinearLayout bottom_player;
     private ActivityMainBinding binding;
