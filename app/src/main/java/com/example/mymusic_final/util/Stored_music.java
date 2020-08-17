@@ -14,7 +14,9 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.mymusic_final.Fragments.Details_of_song;
 import com.example.mymusic_final.Observing.Observable_Stored_music;
+import com.example.mymusic_final.Pojo.Details_music_item;
 import com.example.mymusic_final.Pojo.Music_item;
 
 import java.util.ArrayList;
@@ -30,13 +32,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class Stored_music implements Observable_Stored_music {
 
     public static MutableLiveData<List<Music_item>> music = new MutableLiveData<List<Music_item>>();
+    private static MutableLiveData<Details_music_item> details_music_itemMutableLiveData= new MutableLiveData<Details_music_item>();
 
     public static MutableLiveData<List<Music_item>> getListOfSongs(final Context context) {
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Object> emitter) throws Throwable {
                 Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                Log.v("main", String.valueOf(uri));
                 String[] projection = {
                         MediaStore.Audio.Media.TITLE,
                         MediaStore.Audio.Media.ARTIST,
@@ -44,7 +46,14 @@ public class Stored_music implements Observable_Stored_music {
                         MediaStore.Audio.Media.ALBUM_ID,
                         MediaStore.Audio.Media.ALBUM,
                         MediaStore.Audio.Media.DATA,
-                        MediaStore.Audio.Media._ID
+                        MediaStore.Audio.Media._ID,
+                        //MediaStore.Audio.Media.COMPOSER
+                        //MediaStore.Audio.Media.DATE_ADDED
+                        //MediaStore.Audio.Media.DATE_MODIFIED
+                        //MediaStore.Audio.Media.SIZE
+                        //MediaStore.Audio.Media.IS_ALARM
+                        //MediaStore.Audio.Media.IS_RINGTONE
+
 
                 };
 
@@ -104,6 +113,40 @@ public class Stored_music implements Observable_Stored_music {
         context.getContentResolver().delete(uri, MediaStore.Audio.Media._ID + "=" + id, null);
         Observable_Stored_music.notifyObservers();
     }
+
+    public static MutableLiveData getDetailsAtId(final Context context,int id ){
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = {
+                MediaStore.Audio.Media.SIZE,
+                MediaStore.Audio.Media.COMPOSER,
+                MediaStore.Audio.Media.DATE_ADDED,
+                MediaStore.Audio.Media.DATE_MODIFIED,
+                MediaStore.Audio.Media.IS_ALARM,
+                MediaStore.Audio.Media.IS_RINGTONE
+        };
+        String selection=MediaStore.Audio.Media._ID+"="+id;
+
+        Cursor cursor=context.getContentResolver().query(uri,projection,selection,null,null);
+        while (cursor.moveToNext()){
+
+            String size=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE));
+            String composer=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.COMPOSER));
+            String dateAdded=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED));
+            String dateModified=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED));
+            String isAlarm=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.IS_ALARM));
+            String isRingTone=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.IS_RINGTONE));
+
+            Details_music_item detailsOfSong= new Details_music_item(size,composer,dateAdded,dateModified, isAlarm.equals("1"), isRingTone.equals("1"));
+            details_music_itemMutableLiveData.setValue(detailsOfSong);
+
+        }
+            cursor.close();
+
+        return details_music_itemMutableLiveData;
+
+    }
+
+
 
 
 

@@ -21,12 +21,22 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#fff</item>
         <item name="android:layout_marginRight">32dp</item>
-        <item name="android:background">#404040</item>
+        <item name="android:background">@color/grey</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
 
+    </style>
+
+
+    <style name="detailTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
     </style>
 </resources>

@@ -20,9 +20,27 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 -->
+
+
+
     <include layout="@layout/content_music_details"
         android:id="@+id/includedMusic"
         />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/whole_background_details"
+        android:visibility="gone"
+        />
+    <FrameLayout
+        android:layout_width="360dp"
+        android:layout_height="360dp"
+        android:layout_gravity="center"
+        android:id="@+id/detailsArea"
+        />
+
+
 
 
 

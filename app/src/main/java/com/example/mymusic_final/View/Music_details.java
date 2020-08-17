@@ -9,12 +9,14 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.mymusic_final.Fragments.Details_of_song;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.databinding.ActivityMusicDetailsBinding;
 import com.example.mymusic_final.play_cloud.Music_player;
 import com.example.mymusic_final.play_cloud.Observable;
 import com.example.mymusic_final.play_cloud.Observer;
+import com.example.mymusic_final.util.Constants;
 import com.example.mymusic_final.util.Stored_music;
 import com.example.mymusic_final.util.SwipeDetector;
 
@@ -22,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.MotionEvent;
@@ -49,7 +52,8 @@ public class Music_details extends AppCompatActivity implements Observer {
     public static Integer position;
     public static List<Music_item> listOfSongs;
     private Uri uri;
-    boolean isSpinnerVisible=false;
+    boolean isSpinnerVisible = false, isDetailsVisible = false;
+    final Details_of_song details_of_song = Details_of_song.newInstance(null, null);
 
 
     @Override
@@ -113,7 +117,6 @@ public class Music_details extends AppCompatActivity implements Observer {
                 }
             }
         });
-
 
 
         Observable.subscribe(this);
@@ -200,18 +203,18 @@ public class Music_details extends AppCompatActivity implements Observer {
         binding.includedMusic.forward10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Music_player.getCurrentState().mediaPlayer.isPlaying()){
+                if (Music_player.getCurrentState().mediaPlayer.isPlaying()) {
                     try {
-                        binding.includedMusic.durationPlayed.setText(Music_item.getDuration(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()+10000));
-                        Music_player.seekTo(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()+10000);
+                        binding.includedMusic.durationPlayed.setText(Music_item.getDuration(Music_player.getCurrentState().mediaPlayer.getCurrentPosition() + 10000));
+                        Music_player.seekTo(Music_player.getCurrentState().mediaPlayer.getCurrentPosition() + 10000);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else{
+                } else {
                     try {
-                        binding.includedMusic.durationPlayed.setText(Music_item.getDuration(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()+10000));
+                        binding.includedMusic.durationPlayed.setText(Music_item.getDuration(Music_player.getCurrentState().mediaPlayer.getCurrentPosition() + 10000));
                         Music_player.continuePlaying();
-                        Music_player.seekTo(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()+10000);
+                        Music_player.seekTo(Music_player.getCurrentState().mediaPlayer.getCurrentPosition() + 10000);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -223,23 +226,23 @@ public class Music_details extends AppCompatActivity implements Observer {
         binding.includedMusic.back10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if (Music_player.getCurrentState().mediaPlayer.isPlaying()){
-                   try {
-                       binding.includedMusic.durationPlayed.setText(Music_item.getDuration(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()-10000));
-                       Music_player.seekTo(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()-10000);
-                   } catch (Exception e) {
-                       e.printStackTrace();
-                   }
-               }else{
-                   try {
-                       binding.includedMusic.durationPlayed.setText(Music_item.getDuration(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()-10000));
-                       Music_player.continuePlaying();
-                       Music_player.seekTo(Music_player.getCurrentState().mediaPlayer.getCurrentPosition()-10000);
+                if (Music_player.getCurrentState().mediaPlayer.isPlaying()) {
+                    try {
+                        binding.includedMusic.durationPlayed.setText(Music_item.getDuration(Music_player.getCurrentState().mediaPlayer.getCurrentPosition() - 10000));
+                        Music_player.seekTo(Music_player.getCurrentState().mediaPlayer.getCurrentPosition() - 10000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        binding.includedMusic.durationPlayed.setText(Music_item.getDuration(Music_player.getCurrentState().mediaPlayer.getCurrentPosition() - 10000));
+                        Music_player.continuePlaying();
+                        Music_player.seekTo(Music_player.getCurrentState().mediaPlayer.getCurrentPosition() - 10000);
 
-                   } catch (Exception e) {
-                       e.printStackTrace();
-                   }
-               }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
         });
@@ -247,12 +250,12 @@ public class Music_details extends AppCompatActivity implements Observer {
         binding.includedMusic.shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE()){
+                if (Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE()) {
                     binding.includedMusic.shuffle.setImageResource(R.drawable.shuffle_off);
-                    Music_player.setStateFinishAndRepeat(Music_player.getCurrentStateRepeatAndFinish().isREPEAT(),false,true);
-                }else{
+                    Music_player.setStateFinishAndRepeat(Music_player.getCurrentStateRepeatAndFinish().isREPEAT(), false, true);
+                } else {
                     binding.includedMusic.shuffle.setImageResource(R.drawable.shuffle);
-                    Music_player.setStateFinishAndRepeat(Music_player.getCurrentStateRepeatAndFinish().isREPEAT(),true,false);
+                    Music_player.setStateFinishAndRepeat(Music_player.getCurrentStateRepeatAndFinish().isREPEAT(), true, false);
 
                 }
             }
@@ -260,20 +263,20 @@ public class Music_details extends AppCompatActivity implements Observer {
         binding.includedMusic.repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Music_player.getCurrentStateRepeatAndFinish().isREPEAT()){
+                if (Music_player.getCurrentStateRepeatAndFinish().isREPEAT()) {
                     binding.includedMusic.repeat.setImageResource(R.drawable.repeat_off);
-                    Music_player.setStateFinishAndRepeat(false,Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE(),Music_player.getCurrentStateRepeatAndFinish().isNoShuffle());
-                }else{
+                    Music_player.setStateFinishAndRepeat(false, Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE(), Music_player.getCurrentStateRepeatAndFinish().isNoShuffle());
+                } else {
                     binding.includedMusic.repeat.setImageResource(R.drawable.repeat_one);
-                    Music_player.setStateFinishAndRepeat(true,Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE(),Music_player.getCurrentStateRepeatAndFinish().isNoShuffle());
+                    Music_player.setStateFinishAndRepeat(true, Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE(), Music_player.getCurrentStateRepeatAndFinish().isNoShuffle());
 
                 }
             }
         });
-        if (Music_player.getCurrentStateRepeatAndFinish().isREPEAT()){
+        if (Music_player.getCurrentStateRepeatAndFinish().isREPEAT()) {
             binding.includedMusic.repeat.setImageResource(R.drawable.repeat_one);
         }
-        if (Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE()){
+        if (Music_player.getCurrentStateRepeatAndFinish().isSHUFFLE()) {
             binding.includedMusic.shuffle.setImageResource(R.drawable.shuffle);
         }
 
@@ -281,14 +284,14 @@ public class Music_details extends AppCompatActivity implements Observer {
         new SwipeDetector(binding.includedMusic.albumArtParent).setOnSwipeListener(new SwipeDetector.onSwipeEvent() {
             @Override
             public void SwipeEventDetected(View v, SwipeDetector.SwipeTypeEnum swipeType) {
-                if(swipeType==SwipeDetector.SwipeTypeEnum.LEFT_TO_RIGHT){
+                if (swipeType == SwipeDetector.SwipeTypeEnum.LEFT_TO_RIGHT) {
 
                     try {
                         Music_player.playPrevious();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else if (swipeType==SwipeDetector.SwipeTypeEnum.RIGHT_TO_LEFT){
+                } else if (swipeType == SwipeDetector.SwipeTypeEnum.RIGHT_TO_LEFT) {
                     try {
                         Music_player.playNext();
                     } catch (Exception e) {
@@ -297,7 +300,7 @@ public class Music_details extends AppCompatActivity implements Observer {
 
 
                 }
-                    //getActivity().onBackPressed();
+                //getActivity().onBackPressed();
             }
         });
 
@@ -307,11 +310,11 @@ public class Music_details extends AppCompatActivity implements Observer {
                 if (!isSpinnerVisible) {
                     binding.includedMusic.moreOptionsMenu.setVisibility(View.VISIBLE);
                     binding.includedMusic.dummyImageView.setVisibility(View.VISIBLE);
-                    isSpinnerVisible=true;
-                }else{
+                    isSpinnerVisible = true;
+                } else {
                     binding.includedMusic.moreOptionsMenu.setVisibility(View.GONE);
                     binding.includedMusic.dummyImageView.setVisibility(View.GONE);
-                    isSpinnerVisible=false;
+                    isSpinnerVisible = false;
 
                 }
             }
@@ -323,7 +326,7 @@ public class Music_details extends AppCompatActivity implements Observer {
             public void onClick(View v) {
                 binding.includedMusic.moreOptionsMenu.setVisibility(View.GONE);
                 binding.includedMusic.dummyImageView.setVisibility(View.GONE);
-                isSpinnerVisible=false;
+                isSpinnerVisible = false;
             }
         });
 
@@ -332,11 +335,11 @@ public class Music_details extends AppCompatActivity implements Observer {
     }
 
     private void initClickingMoreOptions() {
-        Context self= this;
+        Context self = this;
         binding.includedMusic.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Stored_music.deleteSongAtID(self,Music_player.getListOfSongs().get(Music_player.getPosition()).get_ID());
+                Stored_music.deleteSongAtID(self, Music_player.getListOfSongs().get(Music_player.getPosition()).get_ID());
                 MoreActionDone();
             }
         });
@@ -367,14 +370,46 @@ public class Music_details extends AppCompatActivity implements Observer {
         binding.includedMusic.details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isDetailsVisible) {
+                    MoreActionGONE();
+                    binding.detailsArea.setVisibility(View.VISIBLE);
+                    binding.wholeBackgroundDetails.setVisibility(View.VISIBLE);
+                    details_of_song.setMusicItem(Music_player.getListOfSongs().get(Music_player.getPosition()));
+                    FragmentManager fragmentManage = getSupportFragmentManager();
+                    fragmentManage.beginTransaction()
+                            .add(R.id.detailsArea, details_of_song)
+                            .commit();
+                    isDetailsVisible = true;
+                    binding.wholeBackgroundDetails.setVisibility(View.VISIBLE);
+
+                }
+            }
+        });
+
+        binding.wholeBackgroundDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isDetailsVisible = false;
+                binding.detailsArea.setVisibility(View.GONE);
+                binding.wholeBackgroundDetails.setVisibility(View.GONE);
+                details_of_song.setMusicItem(Music_player.getListOfSongs().get(Music_player.getPosition()));
+                FragmentManager fragmentManage = getSupportFragmentManager();
+                fragmentManage.beginTransaction()
+                        .remove(details_of_song)
+                        .commit();
+                binding.wholeBackgroundDetails.setVisibility(View.GONE);
 
             }
         });
     }
 
-    private void MoreActionDone() {
+    private void MoreActionGONE() {
         binding.includedMusic.moreOptionsMenu.setVisibility(View.GONE);
-        isSpinnerVisible=false;
+        isSpinnerVisible = false;
+    }
+
+    private void MoreActionDone() {
+        MoreActionGONE();
         try {
             Music_player.playNext();
         } catch (Exception e) {
@@ -418,5 +453,27 @@ public class Music_details extends AppCompatActivity implements Observer {
         }
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if (isSthVisible()) {
+            GONEverythig();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public void GONEverythig() {
+        binding.detailsArea.setVisibility(View.GONE);
+        binding.wholeBackgroundDetails.setVisibility(View.GONE);
+        binding.includedMusic.moreOptionsMenu.setVisibility(View.GONE);
+        isDetailsVisible = false;
+        isSpinnerVisible = false;
+
+    }
+
+    boolean isSthVisible() {
+        return isSpinnerVisible || isDetailsVisible;
+    }
 
 }
