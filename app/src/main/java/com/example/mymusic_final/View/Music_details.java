@@ -68,7 +68,8 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
 
 
         initMusicInfo(Music_player.getListOfSongs(), Music_player.getPosition());
-
+        binding.includedMusic.musicTitle.setSelected(true);
+        binding.includedMusic.musicArtistAlbum.setSelected(true);
 
         binding.includedMusic.playAndPause.setOnClickListener(new View.OnClickListener() {
             @Override

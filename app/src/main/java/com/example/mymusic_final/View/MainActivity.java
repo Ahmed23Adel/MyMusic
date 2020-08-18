@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements Observer,Observer
         View root= binding.getRoot();
         setContentView(root);
 
+        binding.titleHome.setSelected(true);
 
         Intent MusicServiceIntent= new Intent(this, Music_player.class);
         startService(MusicServiceIntent);

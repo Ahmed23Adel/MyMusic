@@ -60,7 +60,7 @@ public class Stored_music implements Observable_Stored_music {
 
                 };
 
-                Cursor cursor = context.getContentResolver().query(uri, projection, MediaStore.Audio.Media.IS_MUSIC + "!=0", null, null);
+                Cursor cursor = context.getContentResolver().query(uri, projection, MediaStore.Audio.Media.IS_MUSIC + "!=0", null, MediaStore.Audio.Media.TITLE);
                 ArrayList<Music_item> listOfSongs = new ArrayList<>();
                 while (cursor.moveToNext()) {
                     Music_item music = new Music_item();
