@@ -51,6 +51,7 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
     boolean isSpinnerVisible = false, isDetailsVisible = false,isEditorVisible=false;
     final Details_of_song details_of_song = Details_of_song.newInstance(null, null);
     final Edit_song edit_song = Edit_song.newInstance(null, null);
+    Context self;
 
 
     @Override
@@ -59,7 +60,7 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
         binding = ActivityMusicDetailsBinding.inflate(getLayoutInflater());
         View root = binding.getRoot();
         setContentView(root);
-
+        self=this;
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
@@ -368,7 +369,8 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
         binding.includedMusic.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Stored_music.share(self,Uri.parse(Music_player.getListOfSongs().get(Music_player.getPosition()).getPath()));
+                GONEverythig();
             }
         });
         binding.includedMusic.editor.setOnClickListener(new View.OnClickListener() {

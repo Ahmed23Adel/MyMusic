@@ -4,10 +4,12 @@ import android.Manifest;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -152,6 +154,13 @@ public class Stored_music implements Observable_Stored_music {
         String where=MediaStore.Audio.Media._ID+"="+id;
         context.getContentResolver().update(uri,contentValues,where,null);
         Observable_Stored_music.notifyObservers();
+    }
+
+    public static void share(Context context,Uri uri){
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("audio/*");
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        context.startActivity(Intent.createChooser(share, "Share My Music"));
     }
 
 
