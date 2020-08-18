@@ -37,4 +37,5 @@
     <string name="is_alarm">Is alarm</string>
     <string name="is_ringtone">is Ringtone</string>
     <string name="channels_count">Channels count</string>
+    <string name="do_want_delete">Do you really want to delete this audio</string>
 </resources>

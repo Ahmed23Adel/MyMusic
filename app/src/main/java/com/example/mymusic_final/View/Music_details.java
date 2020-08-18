@@ -1,6 +1,8 @@
 package com.example.mymusic_final.View;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -339,8 +341,27 @@ public class Music_details extends AppCompatActivity implements Observer {
         binding.includedMusic.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Stored_music.deleteSongAtID(self, Music_player.getListOfSongs().get(Music_player.getPosition()).get_ID());
-                MoreActionDone();
+                AlertDialog.Builder alertBuilder=new AlertDialog.Builder(self);
+                alertBuilder.setMessage(getString(R.string.do_want_delete));
+                alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Stored_music.deleteSongAtID(self, Music_player.getListOfSongs().get(Music_player.getPosition()).get_ID());
+                        MoreActionDone();
+                    }
+                });
+                alertBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (dialog!=null){
+                            dialog.dismiss();
+                            GONEverythig();
+                        }
+                    }
+                });
+                AlertDialog dialog=alertBuilder.create();
+                dialog.show();
+
             }
         });
         binding.includedMusic.goAlbum.setOnClickListener(new View.OnClickListener() {

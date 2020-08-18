@@ -79,7 +79,7 @@ public class Details_music_item {
 
     public String getDateAdded() {
         Date date = new Date(Long.parseLong(getDate_added()) * 1000);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYY-MM-dd ");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd ");
         simpleDateFormat.setTimeZone(TimeZone.getDefault());
         return simpleDateFormat.format(date);
 
@@ -87,7 +87,7 @@ public class Details_music_item {
 
     public String getLastModifiedDate() {
         Date date = new Date(Long.parseLong(getLast_modified()) * 1000);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYY-MM-dd ");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd ");
         simpleDateFormat.setTimeZone(TimeZone.getDefault());
         return simpleDateFormat.format(date);
 
