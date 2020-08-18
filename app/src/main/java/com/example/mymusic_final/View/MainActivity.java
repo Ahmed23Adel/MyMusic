@@ -18,6 +18,7 @@ import com.example.mymusic_final.databinding.ActivityMainBinding;
 import com.example.mymusic_final.play_cloud.Music_player;
 import com.example.mymusic_final.play_cloud.Observable;
 import com.example.mymusic_final.play_cloud.Observer;
+import com.example.mymusic_final.util.Stored_music;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
@@ -39,7 +40,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
-public class MainActivity extends AppCompatActivity implements Observer  {
+public class MainActivity extends AppCompatActivity implements Observer,Observer_Stored_music  {
 
     LinearLayout bottom_player;
     private ActivityMainBinding binding;
@@ -105,8 +106,14 @@ public class MainActivity extends AppCompatActivity implements Observer  {
 
     @Override
     public void updated(ArrayList<Music_item> listOfSongs, int position) {
+       initInfo(listOfSongs,position);
+
+
+    }
+
+    private void initInfo(ArrayList<Music_item> listOfSongs, int position){
         binding.bottomPlayer.setVisibility(View.VISIBLE);
-        Music_item currentMusic= Music_player.getListOfSongs().get(position);
+        Music_item currentMusic= listOfSongs.get(position);
         binding.titleHome.setText(currentMusic.getMusic_title());
         binding.artistHome.setText(currentMusic.getArtistAlbum());
         binding.playAndPauseHome.setImageResource(R.drawable.pause_red);
@@ -135,7 +142,19 @@ public class MainActivity extends AppCompatActivity implements Observer  {
 
                     }
                 });
+    }
 
+    @Override
+    public void updated() {
+        if(!isDestroyed()){
+            Stored_music.getListOfSongs(this).observe(this, new androidx.lifecycle.Observer<List<Music_item>>() {
+                @Override
+                public void onChanged(List<Music_item> music_items) {
+                    Music_player.setListOfSongs((ArrayList)music_items);
+                    initInfo(Music_player.getListOfSongs(),Music_player.getPosition());
 
+                }
+            });
+        }
     }
 }

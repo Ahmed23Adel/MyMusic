@@ -19,7 +19,7 @@
     <string name="editor">Editor</string>
     <string name="details">Details</string>
     <string name="title">Title</string>
-    <string name="artist">artist</string>
+    <string name="artist">Artist</string>
     <string name="album">Album</string>
     <string name="duration">Duration</string>
     <string name="file_path">File path</string>
@@ -38,4 +38,8 @@
     <string name="is_ringtone">is Ringtone</string>
     <string name="channels_count">Channels count</string>
     <string name="do_want_delete">Do you really want to delete this audio</string>
+    <string name="edit_my_song">Edit my song</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit_my_music">Edit my music</string>
 </resources>

@@ -82,8 +82,11 @@ dependencies {
     //sidebar scroll alphabetically
     implementation 'com.turingtechnologies.materialscrollbar:lib:3.+'
 
-    //Lombok
+    //Lombok for getter and setter injection
     compileOnly "org.projectlombok:lombok:1.18.12"
+
+    //for edit text
+    implementation 'com.google.android.material:material:1.1.0'
 
 
 }

@@ -7,21 +7,21 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.mymusic_final.Fragments.Details_of_song;
+import com.example.mymusic_final.Fragments.Edit_song;
+import com.example.mymusic_final.Observing.Observable_Stored_music;
+import com.example.mymusic_final.Observing.Observer_Stored_music;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.databinding.ActivityMusicDetailsBinding;
 import com.example.mymusic_final.play_cloud.Music_player;
 import com.example.mymusic_final.play_cloud.Observable;
 import com.example.mymusic_final.play_cloud.Observer;
-import com.example.mymusic_final.util.Constants;
 import com.example.mymusic_final.util.Stored_music;
 import com.example.mymusic_final.util.SwipeDetector;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -29,33 +29,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
-public class Music_details extends AppCompatActivity implements Observer {
+public class Music_details extends AppCompatActivity implements Observer, Observer_Stored_music {
 
     private ActivityMusicDetailsBinding binding;
     //position is get assigned from adapter
     public static Integer position;
     public static List<Music_item> listOfSongs;
     private Uri uri;
-    boolean isSpinnerVisible = false, isDetailsVisible = false;
+    boolean isSpinnerVisible = false, isDetailsVisible = false,isEditorVisible=false;
     final Details_of_song details_of_song = Details_of_song.newInstance(null, null);
+    final Edit_song edit_song = Edit_song.newInstance(null, null);
 
 
     @Override
@@ -70,9 +65,8 @@ public class Music_details extends AppCompatActivity implements Observer {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
 
-        listOfSongs = getListOfSongs();
-        position = getPosition();
-        initMusicInfo(listOfSongs, position);
+
+        initMusicInfo(Music_player.getListOfSongs(), Music_player.getPosition());
 
 
         binding.includedMusic.playAndPause.setOnClickListener(new View.OnClickListener() {
@@ -122,24 +116,19 @@ public class Music_details extends AppCompatActivity implements Observer {
 
 
         Observable.subscribe(this);
+        Observable_Stored_music.subscribe(this);
 
     }
 
 
-    public List<Music_item> getListOfSongs() {
-        return Music_player.getListOfSongs();
-    }
 
-    public int getPosition() {
-        return Music_player.position;
-    }
 
 
     public void initMusicInfo(List<Music_item> listOfSongs, Integer position) {
-        binding.includedMusic.seekBar.setMax(listOfSongs.get(getPosition()).getDurationMM());
+        binding.includedMusic.seekBar.setMax(listOfSongs.get(position).getDurationMM());
         binding.includedMusic.musicTitle.setText(listOfSongs.get(position).getMusic_title());
         binding.includedMusic.musicArtistAlbum.setText(listOfSongs.get(position).getArtistAlbum());
-        binding.includedMusic.duration.setText(listOfSongs.get(getPosition()).getDuration());
+        binding.includedMusic.duration.setText(listOfSongs.get(position).getDuration());
         Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                 .into(binding.includedMusic.albumArt);
 
@@ -385,7 +374,25 @@ public class Music_details extends AppCompatActivity implements Observer {
         binding.includedMusic.editor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isDetailsVisible) {
+                    MoreActionGONE();
+                    binding.detailsArea.setVisibility(View.VISIBLE);
+                    binding.wholeBackgroundDetails.setVisibility(View.VISIBLE);
+                    edit_song.setMusicItem(Music_player.getListOfSongs().get(Music_player.getPosition()));
+                    FragmentManager fragmentManage = getSupportFragmentManager();
+                    fragmentManage.beginTransaction()
+                            .add(R.id.detailsArea, edit_song)
+                            .commit();
+                    isEditorVisible=true;
+                    binding.wholeBackgroundDetails.setVisibility(View.VISIBLE);
+                    edit_song.setOnCancel(new Edit_song.OnCancel() {
+                        @Override
+                        public void onCancelClicked() {
+                            GONEverythig();
+                        }
+                    });
 
+                }
             }
         });
         binding.includedMusic.details.setOnClickListener(new View.OnClickListener() {
@@ -410,15 +417,23 @@ public class Music_details extends AppCompatActivity implements Observer {
         binding.wholeBackgroundDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isDetailsVisible = false;
                 binding.detailsArea.setVisibility(View.GONE);
                 binding.wholeBackgroundDetails.setVisibility(View.GONE);
-                details_of_song.setMusicItem(Music_player.getListOfSongs().get(Music_player.getPosition()));
-                FragmentManager fragmentManage = getSupportFragmentManager();
-                fragmentManage.beginTransaction()
-                        .remove(details_of_song)
-                        .commit();
-                binding.wholeBackgroundDetails.setVisibility(View.GONE);
+                if (isDetailsVisible) {
+                    //details_of_song.setMusicItem(Music_player.getListOfSongs().get(Music_player.getPosition()));
+                    FragmentManager fragmentManage = getSupportFragmentManager();
+                    fragmentManage.beginTransaction()
+                            .remove(details_of_song)
+                            .commit();
+                    isDetailsVisible=false;
+                }
+                if(isEditorVisible){
+                    FragmentManager fragmentManage = getSupportFragmentManager();
+                    fragmentManage.beginTransaction()
+                            .remove(edit_song)
+                            .commit();
+                    isEditorVisible=false;
+                }
 
             }
         });
@@ -439,13 +454,14 @@ public class Music_details extends AppCompatActivity implements Observer {
     }
 
 
+    //this for Player Cloud when music changes.
     @Override
     public void updated(ArrayList<Music_item> listOfSongs, int position) {
         if (!isDestroyed()) {
             binding.includedMusic.musicTitle.setText(listOfSongs.get(position).getMusic_title());
             binding.includedMusic.musicArtistAlbum.setText(listOfSongs.get(position).getArtistAlbum());
-            binding.includedMusic.duration.setText(listOfSongs.get(getPosition()).getDuration());
-            binding.includedMusic.seekBar.setMax(listOfSongs.get(getPosition()).getDurationMM());
+            binding.includedMusic.duration.setText(listOfSongs.get(position).getDuration());
+            binding.includedMusic.seekBar.setMax(listOfSongs.get(position).getDurationMM());
             Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                     .into(binding.includedMusic.albumArt);
 
@@ -490,11 +506,27 @@ public class Music_details extends AppCompatActivity implements Observer {
         binding.includedMusic.moreOptionsMenu.setVisibility(View.GONE);
         isDetailsVisible = false;
         isSpinnerVisible = false;
+        isEditorVisible=false;
 
     }
 
     boolean isSthVisible() {
-        return isSpinnerVisible || isDetailsVisible;
+        return isSpinnerVisible || isDetailsVisible||isEditorVisible;
     }
 
+
+    //this is for stored music when something is updated
+    @Override
+    public void updated() {
+        if(!isDestroyed()){
+            Stored_music.getListOfSongs(this).observe(this, new androidx.lifecycle.Observer<List<Music_item>>() {
+                @Override
+                public void onChanged(List<Music_item> music_items) {
+                    Music_player.setListOfSongs((ArrayList)music_items);
+                    initMusicInfo(Music_player.getListOfSongs(),Music_player.getPosition());
+
+                }
+            });
+        }
+    }
 }

@@ -114,7 +114,7 @@
         <TextView
             android:id="@+id/editor"
             style="@style/More_options"
-            android:text="@string/editor" />
+            android:text="@string/edit_my_music" />
 
         <TextView
             android:id="@+id/details"

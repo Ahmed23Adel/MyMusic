@@ -2,6 +2,7 @@ package com.example.mymusic_final.util;
 
 import android.Manifest;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -146,6 +147,12 @@ public class Stored_music implements Observable_Stored_music {
 
     }
 
+    public static void updateAtId(final Context context, int id, ContentValues contentValues){
+        Uri uri=MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String where=MediaStore.Audio.Media._ID+"="+id;
+        context.getContentResolver().update(uri,contentValues,where,null);
+        Observable_Stored_music.notifyObservers();
+    }
 
 
 
