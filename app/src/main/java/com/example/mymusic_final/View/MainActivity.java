@@ -102,6 +102,14 @@ public class MainActivity extends AppCompatActivity implements Observer,Observer
                 }
             }
         });
+
+        binding.goSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(MainActivity.this, search.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -24,6 +25,7 @@ import com.example.mymusic_final.Pojo.Music_item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -35,7 +37,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class Stored_music implements Observable_Stored_music {
 
     public static MutableLiveData<List<Music_item>> music = new MutableLiveData<List<Music_item>>();
-    private static MutableLiveData<Details_music_item> details_music_itemMutableLiveData= new MutableLiveData<Details_music_item>();
+    private static MutableLiveData<Details_music_item> details_music_itemMutableLiveData = new MutableLiveData<Details_music_item>();
+    public static MutableLiveData<List<Music_item>> search_music = new MutableLiveData<List<Music_item>>();
 
     public static MutableLiveData<List<Music_item>> getListOfSongs(final Context context) {
         Observable.create(new ObservableOnSubscribe<Object>() {
@@ -117,7 +120,7 @@ public class Stored_music implements Observable_Stored_music {
         Observable_Stored_music.notifyObservers();
     }
 
-    public static MutableLiveData getDetailsAtId(final Context context,int id ){
+    public static MutableLiveData getDetailsAtId(final Context context, int id) {
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] projection = {
                 MediaStore.Audio.Media.SIZE,
@@ -127,44 +130,141 @@ public class Stored_music implements Observable_Stored_music {
                 MediaStore.Audio.Media.IS_ALARM,
                 MediaStore.Audio.Media.IS_RINGTONE
         };
-        String selection=MediaStore.Audio.Media._ID+"="+id;
+        String selection = MediaStore.Audio.Media._ID + "=" + id;
 
-        Cursor cursor=context.getContentResolver().query(uri,projection,selection,null,null);
-        while (cursor.moveToNext()){
+        Cursor cursor = context.getContentResolver().query(uri, projection, selection, null, null);
+        while (cursor.moveToNext()) {
 
-            String size=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE));
-            String composer=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.COMPOSER));
-            String dateAdded=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED));
-            String dateModified=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED));
-            String isAlarm=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.IS_ALARM));
-            String isRingTone=cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.IS_RINGTONE));
+            String size = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE));
+            String composer = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.COMPOSER));
+            String dateAdded = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED));
+            String dateModified = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED));
+            String isAlarm = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.IS_ALARM));
+            String isRingTone = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.IS_RINGTONE));
 
-            Details_music_item detailsOfSong= new Details_music_item(size,composer,dateAdded,dateModified, isAlarm.equals("1"), isRingTone.equals("1"));
+            Details_music_item detailsOfSong = new Details_music_item(size, composer, dateAdded, dateModified, isAlarm.equals("1"), isRingTone.equals("1"));
             details_music_itemMutableLiveData.setValue(detailsOfSong);
 
         }
-            cursor.close();
+        cursor.close();
 
         return details_music_itemMutableLiveData;
 
     }
 
-    public static void updateAtId(final Context context, int id, ContentValues contentValues){
-        Uri uri=MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String where=MediaStore.Audio.Media._ID+"="+id;
-        context.getContentResolver().update(uri,contentValues,where,null);
+    public static void updateAtId(final Context context, int id, ContentValues contentValues) {
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String where = MediaStore.Audio.Media._ID + "=" + id;
+        context.getContentResolver().update(uri, contentValues, where, null);
         Observable_Stored_music.notifyObservers();
     }
 
-    public static void share(Context context,Uri uri){
+    public static void share(Context context, Uri uri) {
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("audio/*");
         share.putExtra(Intent.EXTRA_STREAM, uri);
         context.startActivity(Intent.createChooser(share, "Share My Music"));
+        search(context,"ahmed","ahmed","ahmed");
+    }
+
+    public static MutableLiveData search(final Context context, final String title,final String album,final String artist) {
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Object> emitter) throws Throwable {
+                Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                String[] projection = {
+                        MediaStore.Audio.Media.TITLE,
+                        MediaStore.Audio.Media.ARTIST,
+                        MediaStore.Audio.Media.DURATION,
+                        MediaStore.Audio.Media.ALBUM_ID,
+                        MediaStore.Audio.Media.ALBUM,
+                        MediaStore.Audio.Media.DATA,
+                        MediaStore.Audio.Media._ID,
+                };
+                Log.v("main","10"+title);
+                Log.v("main","11"+album);
+                Log.v("main","12"+artist);
+
+                //String selection = MediaStore.Audio.Media.IS_MUSIC + "!=0 AND (" + MediaStore.Audio.Media.TITLE + " LIKE ?" + " || " +
+                        //MediaStore.Audio.Media.ALBUM + " LIKE ?" + " || "+MediaStore.Audio.Media.ARTIST + " LIKE ?" + ")";
+                //Log.v("main",selection);
+
+                String selection=MediaStore.Audio.Media.IS_MUSIC+" !=0 AND "+MediaStore.Audio.Media.ARTIST+" = ahmed ";
+
+
+                        /*+
+                        "AND ( "
+                        +MediaStore.Audio.Media.TITLE+" = ? "
+                        +" || "
+                        +MediaStore.Audio.Media.ALBUM+" = ? "
+                        +" || "
+                        +MediaStore.Audio.Media.ARTIST+" = ? "
+                        +" ) "*/;
+                String [] selectionArgs=new String[]{title};
+                Cursor cursor = context.getContentResolver().query(uri, projection, null,null, MediaStore.Audio.Media.TITLE);
+                Log.v("main","9"+cursor.getCount());
+
+                ArrayList<Music_item> listOfSongs = new ArrayList<>();
+                final Uri sArtworkUri = Uri
+                        .parse("content://media/external/audio/albumart");
+                while (cursor.moveToNext()) {
+                    Log.v("main","999999999");
+
+                    Music_item music = new Music_item();
+                    String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                    String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                    String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
+                    String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
+                    Integer id = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
+                    Log.v("main",title);
+
+                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+
+
+
+                    Uri uri2 = ContentUris.withAppendedId(sArtworkUri,
+                            cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
+                    music.setAlbumArt(uri2);
+
+                    music.setMusic_title(title);
+                    music.setArtist(artist);
+                    music.setFav(false);
+                    music.setDuration(duration);
+                    music.setPicUri(null);
+                    music.setPath(path);
+                    music.setAlbumName(album);
+                    music.set_ID(id);
+                    listOfSongs.add(music);
+                }
+                cursor.close();
+                Log.v("main","8"+listOfSongs.size());
+
+                emitter.onNext(listOfSongs);
+
+            }
+        }).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe(o -> {
+            search_music.setValue((List) o);
+        });
+        return search_music;
     }
 
 
 
+    public static MutableLiveData searchRX(final Context context, final String title,final String album,final String artist){
+        ArrayList<Music_item> arrayList= new ArrayList<>();
+        music.observe((LifecycleOwner) context, music_items -> {
+            for(Music_item mi: music_items){
+                if ((title!=null&&mi.getMusic_title().toLowerCase().contains(title.toLowerCase()))
+                        ||(album!=null&&mi.getAlbumName().toLowerCase().contains(album.toLowerCase()))
+                        ||(artist!=null&&mi.getArtist().toLowerCase().contains(artist.toLowerCase()))){
+                    arrayList.add(mi);
+                }
+            }
+            search_music.postValue(arrayList);
+
+        });
+        return search_music;
+    }
 
 
 }
