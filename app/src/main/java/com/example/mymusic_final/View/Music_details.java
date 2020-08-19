@@ -3,6 +3,7 @@ package com.example.mymusic_final.View;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -12,6 +13,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.mymusic_final.Fragments.Details_of_song;
 import com.example.mymusic_final.Fragments.Edit_song;
+import com.example.mymusic_final.Fragments.SettingsFragment;
 import com.example.mymusic_final.Observing.Observable_Stored_music;
 import com.example.mymusic_final.Observing.Observer_Stored_music;
 import com.example.mymusic_final.Pojo.Music_item;
@@ -28,7 +30,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.SeekBar;
@@ -370,8 +371,18 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
         binding.includedMusic.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Stored_music.share(self,Uri.parse(Music_player.getListOfSongs().get(Music_player.getPosition()).getPath()));
-                GONEverythig();
+                binding.detailsArea.setVisibility(View.VISIBLE);
+                binding.wholeBackgroundDetails.setVisibility(View.VISIBLE);
+                FragmentManager fragmentManage = getSupportFragmentManager();
+                fragmentManage.beginTransaction()
+                        .add(R.id.detailsArea, new SettingsFragment())
+                        .commit();
+
+                //Stored_music.share(self,Uri.parse(Music_player.getListOfSongs().get(Music_player.getPosition()).getPath()));
+                //GONEverythig();
+
+
+
             }
         });
         binding.includedMusic.editor.setOnClickListener(new View.OnClickListener() {

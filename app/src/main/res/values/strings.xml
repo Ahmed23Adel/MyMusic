@@ -42,4 +42,22 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="edit_my_music">Edit my music</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="search_in">Search in</string>
+    <string name="key_title">key_title</string>
+    <string name="key_album">key_album</string>
+    <string name="key_artist">key_artist</string>
 </resources>

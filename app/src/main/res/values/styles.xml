@@ -5,6 +5,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+    </style>
+
+    //for preference
+    <style name="PreferencesTheme">
+        <item name="android:windowBackground">@color/grey</item>
+        <item name="android:background">#FFEAEAEA</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
