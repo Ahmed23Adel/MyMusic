@@ -371,15 +371,8 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
         binding.includedMusic.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.detailsArea.setVisibility(View.VISIBLE);
-                binding.wholeBackgroundDetails.setVisibility(View.VISIBLE);
-                FragmentManager fragmentManage = getSupportFragmentManager();
-                fragmentManage.beginTransaction()
-                        .add(R.id.detailsArea, new SettingsFragment())
-                        .commit();
-
-                //Stored_music.share(self,Uri.parse(Music_player.getListOfSongs().get(Music_player.getPosition()).getPath()));
-                //GONEverythig();
+                Stored_music.share(self,Uri.parse(Music_player.getListOfSongs().get(Music_player.getPosition()).getPath()));
+                GONEverythig();
 
 
 

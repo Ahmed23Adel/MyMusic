@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="8dp"
+    android:background="@drawable/round_black"
+    >
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/backgrouns_13"
+        android:id="@+id/album_pic"
+        android:layout_margin="8dp"
+        />
+
+    <TextView
+        android:id="@+id/title_album"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:text="Adele"
+        android:fontFamily="sans-serif"
+        android:layout_margin="8dp"
+        android:textColor="#fff"
+        />
+</LinearLayout>

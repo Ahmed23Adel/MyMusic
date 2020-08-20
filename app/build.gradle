@@ -84,13 +84,17 @@ dependencies {
     implementation 'com.turingtechnologies.materialscrollbar:lib:3.+'
 
     //Lombok for getter and setter injection
-    compileOnly "org.projectlombok:lombok:1.18.12"
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
     //for edit text
     implementation 'com.google.android.material:material:1.1.0'
 
     //shared prefrernces
     implementation 'com.github.GrenderG:Prefs:1.3'
+
+    //paletter for extractions of colors
+    implementation 'com.android.support:palette-v7:28.0.0'
 
 
 }

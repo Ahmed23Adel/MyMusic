@@ -17,13 +17,16 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.example.mymusic_final.Fragments.Details_of_song;
 import com.example.mymusic_final.Observing.Observable_Stored_music;
+import com.example.mymusic_final.Pojo.Album_item;
 import com.example.mymusic_final.Pojo.Details_music_item;
 import com.example.mymusic_final.Pojo.Music_item;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -39,6 +42,7 @@ public class Stored_music implements Observable_Stored_music {
     public static MutableLiveData<List<Music_item>> music = new MutableLiveData<List<Music_item>>();
     private static MutableLiveData<Details_music_item> details_music_itemMutableLiveData = new MutableLiveData<Details_music_item>();
     public static MutableLiveData<List<Music_item>> search_music = new MutableLiveData<List<Music_item>>();
+    public static MutableLiveData<List<Album_item>> albums_music = new MutableLiveData<List<Album_item>>();
 
     public static MutableLiveData<List<Music_item>> getListOfSongs(final Context context) {
         Observable.create(new ObservableOnSubscribe<Object>() {
@@ -164,7 +168,8 @@ public class Stored_music implements Observable_Stored_music {
         share.setType("audio/*");
         share.putExtra(Intent.EXTRA_STREAM, uri);
         context.startActivity(Intent.createChooser(share, "Share My Music"));
-        search(context,"ahmed","ahmed","ahmed");
+        //search(context,"ahmed","ahmed","ahmed");
+        getAlbums(context);
     }
 
     public static MutableLiveData search(final Context context, final String title,final String album,final String artist) {
@@ -264,6 +269,56 @@ public class Stored_music implements Observable_Stored_music {
 
         });
         return search_music;
+    }
+
+    //: TODO doesnt work update it to likenHashSet
+    public static MutableLiveData getAlbums(final Context context){
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Object> emitter) throws Throwable {
+                Uri uri= MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                String[] projections=new String[]{
+                        MediaStore.Audio.Media.ALBUM_ID,
+                        //MediaStore.Audio.Media.ALBUM,
+
+                };
+
+                String selection=MediaStore.Audio.Media.IS_MUSIC+" !=0";
+                Cursor cursor= context.getContentResolver().query(uri,projections,selection,null,MediaStore.Audio.Media.TITLE);
+
+                //I added them to linkedHashSet to remove any duplicates IDs
+                LinkedHashSet<Integer> linkedHashSet= new LinkedHashSet<Integer>();
+                while(cursor.moveToNext()){
+                    linkedHashSet.add(cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
+                }
+                cursor.close();
+
+                String[] projectionArray=new String[]{
+                        MediaStore.Audio.Media.ALBUM,
+
+                };
+                //I added them all to arrayList
+                ArrayList<Album_item>  albumArray= new ArrayList<Album_item>();
+                Uri sArtworkUri = Uri
+                        .parse("content://media/external/audio/albumart");
+                for (Integer n:linkedHashSet){
+                    Album_item albumItem=new Album_item();
+                    albumItem.set_ID(n);
+                    Cursor cursorArray= context.getContentResolver().query(uri,projectionArray,selection,null,null);
+                    while(cursorArray.moveToNext()){
+                        albumItem.setAlbumName(cursorArray.getString(cursorArray.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
+                    }
+
+                    Uri uri2 = ContentUris.withAppendedId(sArtworkUri, n);
+                    albumItem.setAlbumUri(uri2);
+                    albumArray.add(albumItem);
+                }
+                linkedHashSet.clear();
+                //albums_music.setValue(albumArray);
+                emitter.onNext(albumArray);
+            }
+        }).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe(o->{ albums_music.setValue((List)o);});
+        return albums_music;
     }
 
 
