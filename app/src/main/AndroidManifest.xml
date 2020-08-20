@@ -12,9 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.search"
-            android:theme="@style/Theme.Design.NoActionBar"
-            />
+        <activity
+            android:name=".View.album_details"
+            android:label="@string/title_activity_album_details"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".View.search"
+            android:theme="@style/Theme.Design.NoActionBar" />
         <activity
             android:name=".View.Music_details"
             android:label="@string/title_activity_music_details"
@@ -29,7 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <service android:name=".Services.old_Music_player" />
         <service android:name=".play_cloud.Music_player" />

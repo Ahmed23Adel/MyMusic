@@ -35,7 +35,7 @@ public class adapter_albums extends RecyclerView.Adapter<adapter_albums.ViewHold
     ArrayList<Album_item> listOfAlbums;
     Context context;
     public static int position;
-
+    public OnClickListener listener;
     public adapter_albums setContext(Context context) {
         this.context = context;
         return this;
@@ -67,6 +67,12 @@ public class adapter_albums extends RecyclerView.Adapter<adapter_albums.ViewHold
         holder.title.setText(currentAlbumItem.getAlbumName());
         Glide.with(context).load(currentAlbumItem.getAlbumUri()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                 .into(holder.albumPic);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick(currentAlbumItem.get_ID());
+            }
+        });
 
         /*ImageDecoder.Source source = ImageDecoder.createSource(context.getContentResolver(), currentAlbumItem.getAlbumUri());
         try {
@@ -94,5 +100,14 @@ public class adapter_albums extends RecyclerView.Adapter<adapter_albums.ViewHold
             title = view.findViewById(R.id.title_album);
             albumPic = view.findViewById(R.id.album_pic);
         }
+    }
+
+    public interface OnClickListener{
+        void onClick(int id);
+    }
+
+    //it's set by albums fragment which when clicked the section adapter goes to album_details
+    public void setListener(OnClickListener listener) {
+        this.listener = listener;
     }
 }

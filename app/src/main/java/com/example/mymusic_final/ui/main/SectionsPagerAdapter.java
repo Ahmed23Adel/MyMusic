@@ -1,6 +1,7 @@
 package com.example.mymusic_final.ui.main;
 
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -11,6 +12,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.example.mymusic_final.Fragments.fragment_music;
 import com.example.mymusic_final.Fragments.fragmentalbums;
 import com.example.mymusic_final.R;
+import com.example.mymusic_final.View.album_details;
+import com.example.mymusic_final.util.Constants;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -34,7 +37,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return fragment_music.newInstance(null,null);
             }
             case 1:{
-                return fragmentalbums.newInstance(2);
+                fragmentalbums fragment=fragmentalbums.newInstance(2);
+                return fragment;
             }
 
         }

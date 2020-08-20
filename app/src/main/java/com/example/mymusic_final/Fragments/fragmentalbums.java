@@ -2,6 +2,7 @@ package com.example.mymusic_final.Fragments;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -20,7 +21,9 @@ import android.view.ViewGroup;
 import com.example.mymusic_final.Adapter.adapter_music;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.Adapter.adapter_albums;
+import com.example.mymusic_final.View.album_details;
 import com.example.mymusic_final.dummy.DummyContent;
+import com.example.mymusic_final.util.Constants;
 import com.example.mymusic_final.util.Stored_music;
 import com.google.android.material.snackbar.Snackbar;
 import com.turingtechnologies.materialscrollbar.MaterialScrollBar;
@@ -41,6 +44,7 @@ public class fragmentalbums extends Fragment {
     private final int requestCode_readExternalStorage=1;
     RecyclerView recyclerView;
     private adapter_albums adapter_albums=new adapter_albums();
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -77,14 +81,10 @@ public class fragmentalbums extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
-            Log.v("main","DDD"+mColumnCount);
             if (mColumnCount <= 1) {
-                Log.v("main","D"+mColumnCount);
 
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
-                Log.v("main","DD"+mColumnCount);
-
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             if (Stored_music.isExternalReadGranted(getContext())){
@@ -129,6 +129,16 @@ public class fragmentalbums extends Fragment {
     void setRecyclerView(ArrayList music_items){
         recyclerView.setHasFixedSize(true);
         adapter_albums= new adapter_albums().setListOfSongs(music_items).setContext(getContext());
+
+        adapter_albums.setListener(new adapter_albums.OnClickListener() {
+            @Override
+            public void onClick(int id) {
+                Intent intent= new Intent(getContext(), album_details.class);
+                intent.putExtra(Constants.Music.ALBUM_ID,id);
+                getContext().startActivity(intent);
+            }
+        });
+
         recyclerView.setAdapter(adapter_albums);
 
         //for sidebar scroll alphabetically
@@ -137,5 +147,6 @@ public class fragmentalbums extends Fragment {
         materialScrollBar.setAutoHide(true);
         materialScrollBar.setTextColour(R.color.black);
     }
+
 
 }
