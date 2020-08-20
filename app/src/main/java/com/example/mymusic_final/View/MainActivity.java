@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements Observer,Observer
             binding.playAndPauseHome.setImageResource(R.drawable.play_red);
 
         }
-        Glide.with(MainActivity.this).load(currentMusic.getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
+        Glide.with(MainActivity.this).load(currentMusic.getAlbumArt()).circleCrop().error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                 .into(binding.albumArtHome);
 
 

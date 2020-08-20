@@ -9,6 +9,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.mymusic_final.Fragments.Details_of_song;
@@ -132,7 +135,9 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
         binding.includedMusic.musicTitle.setText(listOfSongs.get(position).getMusic_title());
         binding.includedMusic.musicArtistAlbum.setText(listOfSongs.get(position).getArtistAlbum());
         binding.includedMusic.duration.setText(listOfSongs.get(position).getDuration());
-        Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(32));
+        Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).apply(requestOptions).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                 .into(binding.includedMusic.albumArt);
 
         Glide.with(this)
@@ -469,7 +474,9 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
             binding.includedMusic.musicArtistAlbum.setText(listOfSongs.get(position).getArtistAlbum());
             binding.includedMusic.duration.setText(listOfSongs.get(position).getDuration());
             binding.includedMusic.seekBar.setMax(listOfSongs.get(position).getDurationMM());
-            Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(32));
+            Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).apply(requestOptions).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                     .into(binding.includedMusic.albumArt);
 
             Glide.with(this)
