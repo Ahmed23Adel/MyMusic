@@ -1,5 +1,6 @@
 package com.example.mymusic_final.View;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,9 @@ import com.example.mymusic_final.Fragments.fragment_music;
 import com.example.mymusic_final.Pojo.Music_item;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.databinding.ActivityAlbumDetailsBinding;
+import com.example.mymusic_final.play_cloud.Music_player;
+import com.example.mymusic_final.play_cloud.Observable;
+import com.example.mymusic_final.play_cloud.Observer;
 import com.example.mymusic_final.util.Constants;
 import com.example.mymusic_final.util.Stored_music;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -34,7 +38,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
-public class album_details extends AppCompatActivity {
+public class album_details extends AppCompatActivity implements Observer {
 
     private int albumID;
     private ArrayList<Music_item> listOfMusic;
@@ -89,6 +93,87 @@ public class album_details extends AppCompatActivity {
 
                     }
                 });
+        Observable.subscribe(this);
+        View.OnClickListener onClickListener= new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(album_details.this, Music_details.class);
+                startActivity(intent);
+            }
+        };
+        binding.includedBottomBar.bottomPlayer.setOnClickListener(onClickListener);
+        binding.includedBottomBar.titleHome.setOnClickListener(onClickListener);
+        binding.includedBottomBar.artistHome.setOnClickListener(onClickListener);
+        binding.includedBottomBar.albumArtHome.setOnClickListener(onClickListener);
+        binding.includedBottomBar.playAndPauseHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Music_player.isPlaying()){
+                    try {
+                        Music_player.pause();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    binding.includedBottomBar.playAndPauseHome.setImageResource(R.drawable.play_red);
+                }else{
+                    try {
+                        Music_player.continuePlaying();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    binding.includedBottomBar.playAndPauseHome.setImageResource(R.drawable.pause_red);
+                }
+            }
+        });
 
+       initBottomBar();
+
+    }
+
+    private void initBottomBar(){
+        if(Music_player.isPlaying()){
+            initInfo(Music_player.getListOfSongs(),Music_player.getPosition());
+        }
+
+    }
+    @Override
+    public void updated(ArrayList<Music_item> listOfSongs, int position) {
+        if(!isDestroyed()) {
+            initInfo(listOfSongs, position);
+        }
+    }
+
+    private void initInfo(ArrayList<Music_item> listOfSongs, int position){
+
+        binding.includedBottomBar.bottomPlayer.setVisibility(View.VISIBLE);
+        Music_item currentMusic= listOfSongs.get(position);
+        binding.includedBottomBar.titleHome.setText(currentMusic.getMusic_title());
+        binding.includedBottomBar.artistHome.setText(currentMusic.getArtistAlbum());
+        binding.includedBottomBar.playAndPauseHome.setImageResource(R.drawable.pause_red);
+        if (Music_player.isPlaying()){
+            binding.includedBottomBar.playAndPauseHome.setImageResource(R.drawable.pause_red);
+        }else{
+            binding.includedBottomBar.playAndPauseHome.setImageResource(R.drawable.play_red);
+
+        }
+        Glide.with(album_details.this).load(currentMusic.getAlbumArt()).circleCrop().error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
+                .into(binding.includedBottomBar.albumArtHome);
+
+
+        Glide.with(album_details.this)
+                .load(currentMusic.getAlbumArt())
+                .apply(bitmapTransform(new BlurTransformation(50, 5)))
+                .into(new CustomTarget<Drawable>() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        binding.includedBottomBar.bottomPlayer.setBackground(resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
     }
 }

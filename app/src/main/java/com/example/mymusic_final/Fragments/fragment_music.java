@@ -157,8 +157,10 @@ public class fragment_music extends Fragment implements Observer_Stored_music {
     //for Stored_Music observer
     @Override
     public void updated() {
-        recyclerView.setAdapter(null);
-        showMusic();
+        if (getActivity()!=null) {
+            recyclerView.setAdapter(null);
+            showMusic();
+        }
     }
 
     void setRecyclerView(ArrayList music_items) {

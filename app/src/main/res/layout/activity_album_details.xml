@@ -58,4 +58,5 @@
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 -->
+    <include layout="@layout/bottom_bar_player" android:id="@+id/includedBottomBar"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
