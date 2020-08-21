@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.mymusic_final.Fragments.fragment_artist_list;
 import com.example.mymusic_final.Fragments.fragment_music;
 import com.example.mymusic_final.Fragments.fragmentalbums;
 import com.example.mymusic_final.R;
@@ -22,7 +23,7 @@ import com.example.mymusic_final.util.Constants;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2,R.string.tab_text_3};
     private final Context mContext;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
@@ -39,6 +40,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 1:{
                 fragmentalbums fragment=fragmentalbums.newInstance(2);
                 return fragment;
+            }
+            case 2:{
+                return fragment_artist_list.newInstance(2);
             }
 
         }

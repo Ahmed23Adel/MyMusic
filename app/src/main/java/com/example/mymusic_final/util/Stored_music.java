@@ -22,6 +22,7 @@ import androidx.lifecycle.Observer;
 import com.example.mymusic_final.Fragments.Details_of_song;
 import com.example.mymusic_final.Observing.Observable_Stored_music;
 import com.example.mymusic_final.Pojo.Album_item;
+import com.example.mymusic_final.Pojo.Artist_item;
 import com.example.mymusic_final.Pojo.Details_music_item;
 import com.example.mymusic_final.Pojo.Music_item;
 
@@ -43,6 +44,7 @@ public class Stored_music implements Observable_Stored_music {
     private static MutableLiveData<Details_music_item> details_music_itemMutableLiveData = new MutableLiveData<Details_music_item>();
     public static MutableLiveData<List<Music_item>> search_music = new MutableLiveData<List<Music_item>>();
     public static MutableLiveData<List<Album_item>> albums_music = new MutableLiveData<List<Album_item>>();
+    public static MutableLiveData<List<Artist_item>> artists_music = new MutableLiveData<List<Artist_item>>();
 
     public static MutableLiveData<List<Music_item>> getListOfSongs(final Context context) {
         Observable.create(new ObservableOnSubscribe<Object>() {
@@ -172,10 +174,14 @@ public class Stored_music implements Observable_Stored_music {
         share.putExtra(Intent.EXTRA_STREAM, uri);
         context.startActivity(Intent.createChooser(share, "Share My Music"));
         //search(context,"ahmed","ahmed","ahmed");
-        getAlbums(context);
+        //getAlbums(context);
+        /*getArtists(context).observe((LifecycleOwner) context, o ->{
+            ArrayList arrayList=(ArrayList) o;
+            Log.v("main","ar"+arrayList.size());
+        });*/
     }
 
-    public static MutableLiveData search(final Context context, final String title,final String album,final String artist) {
+    public static MutableLiveData search(final Context context, final String title, final String album, final String artist) {
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Object> emitter) throws Throwable {
@@ -189,15 +195,15 @@ public class Stored_music implements Observable_Stored_music {
                         MediaStore.Audio.Media.DATA,
                         MediaStore.Audio.Media._ID,
                 };
-                Log.v("main","10"+title);
-                Log.v("main","11"+album);
-                Log.v("main","12"+artist);
+                Log.v("main", "10" + title);
+                Log.v("main", "11" + album);
+                Log.v("main", "12" + artist);
 
                 //String selection = MediaStore.Audio.Media.IS_MUSIC + "!=0 AND (" + MediaStore.Audio.Media.TITLE + " LIKE ?" + " || " +
-                        //MediaStore.Audio.Media.ALBUM + " LIKE ?" + " || "+MediaStore.Audio.Media.ARTIST + " LIKE ?" + ")";
+                //MediaStore.Audio.Media.ALBUM + " LIKE ?" + " || "+MediaStore.Audio.Media.ARTIST + " LIKE ?" + ")";
                 //Log.v("main",selection);
 
-                String selection=MediaStore.Audio.Media.IS_MUSIC+" !=0 AND "+MediaStore.Audio.Media.ARTIST+" = ahmed ";
+                String selection = MediaStore.Audio.Media.IS_MUSIC + " !=0 AND " + MediaStore.Audio.Media.ARTIST + " = ahmed ";
 
 
                         /*+
@@ -207,16 +213,17 @@ public class Stored_music implements Observable_Stored_music {
                         +MediaStore.Audio.Media.ALBUM+" = ? "
                         +" || "
                         +MediaStore.Audio.Media.ARTIST+" = ? "
-                        +" ) "*/;
-                String [] selectionArgs=new String[]{title};
-                Cursor cursor = context.getContentResolver().query(uri, projection, null,null, MediaStore.Audio.Media.TITLE);
-                Log.v("main","9"+cursor.getCount());
+                        +" ) "*/
+                ;
+                String[] selectionArgs = new String[]{title};
+                Cursor cursor = context.getContentResolver().query(uri, projection, null, null, MediaStore.Audio.Media.TITLE);
+                Log.v("main", "9" + cursor.getCount());
 
                 ArrayList<Music_item> listOfSongs = new ArrayList<>();
                 final Uri sArtworkUri = Uri
                         .parse("content://media/external/audio/albumart");
                 while (cursor.moveToNext()) {
-                    Log.v("main","999999999");
+                    Log.v("main", "999999999");
 
                     Music_item music = new Music_item();
                     String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
@@ -224,10 +231,9 @@ public class Stored_music implements Observable_Stored_music {
                     String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
                     String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                     Integer id = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
-                    Log.v("main",title);
+                    Log.v("main", title);
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-
 
 
                     Uri uri2 = ContentUris.withAppendedId(sArtworkUri,
@@ -245,7 +251,7 @@ public class Stored_music implements Observable_Stored_music {
                     listOfSongs.add(music);
                 }
                 cursor.close();
-                Log.v("main","8"+listOfSongs.size());
+                Log.v("main", "8" + listOfSongs.size());
 
                 emitter.onNext(listOfSongs);
 
@@ -257,14 +263,13 @@ public class Stored_music implements Observable_Stored_music {
     }
 
 
-
-    public static MutableLiveData searchRX(final Context context, final String title,final String album,final String artist){
-        ArrayList<Music_item> arrayList= new ArrayList<>();
+    public static MutableLiveData searchRX(final Context context, final String title, final String album, final String artist) {
+        ArrayList<Music_item> arrayList = new ArrayList<>();
         music.observe((LifecycleOwner) context, music_items -> {
-            for(Music_item mi: music_items){
-                if ((title!=null&&mi.getMusic_title().toLowerCase().contains(title.toLowerCase()))
-                        ||(album!=null&&mi.getAlbumName().toLowerCase().contains(album.toLowerCase()))
-                        ||(artist!=null&&mi.getArtist().toLowerCase().contains(artist.toLowerCase()))){
+            for (Music_item mi : music_items) {
+                if ((title != null && mi.getMusic_title().toLowerCase().contains(title.toLowerCase()))
+                        || (album != null && mi.getAlbumName().toLowerCase().contains(album.toLowerCase()))
+                        || (artist != null && mi.getArtist().toLowerCase().contains(artist.toLowerCase()))) {
                     arrayList.add(mi);
                 }
             }
@@ -275,42 +280,42 @@ public class Stored_music implements Observable_Stored_music {
     }
 
     //: TODO doesnt work update it to likenHashSet
-    public static MutableLiveData getAlbums(final Context context){
+    public static MutableLiveData getAlbums(final Context context) {
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Object> emitter) throws Throwable {
-                Uri uri= MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                String[] projections=new String[]{
+                Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                String[] projections = new String[]{
                         MediaStore.Audio.Media.ALBUM_ID,
                         //MediaStore.Audio.Media.ALBUM,
 
                 };
 
-                String selection=MediaStore.Audio.Media.IS_MUSIC+" !=0";
-                Cursor cursor= context.getContentResolver().query(uri,projections,selection,null,MediaStore.Audio.Media.TITLE);
+                String selection = MediaStore.Audio.Media.IS_MUSIC + " !=0";
+                Cursor cursor = context.getContentResolver().query(uri, projections, selection, null, MediaStore.Audio.Media.TITLE);
 
                 //I added them to linkedHashSet to remove any duplicates IDs
-                LinkedHashSet<Integer> linkedHashSet= new LinkedHashSet<Integer>();
-                while(cursor.moveToNext()){
+                LinkedHashSet<Integer> linkedHashSet = new LinkedHashSet<Integer>();
+                while (cursor.moveToNext()) {
                     linkedHashSet.add(cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
                 }
                 cursor.close();
 
-                String[] projectionArray=new String[]{
+                String[] projectionArray = new String[]{
                         MediaStore.Audio.Media.ALBUM,
 
                 };
-                String selectionArray= selection+" AND "+MediaStore.Audio.Media.ALBUM_ID+" = ?";
+                String selectionArray = selection + " AND " + MediaStore.Audio.Media.ALBUM_ID + " = ?";
                 //I added them all to arrayList
-                ArrayList<Album_item>  albumArray= new ArrayList<Album_item>();
+                ArrayList<Album_item> albumArray = new ArrayList<Album_item>();
                 Uri sArtworkUri = Uri
                         .parse("content://media/external/audio/albumart");
-                for (Integer n:linkedHashSet){
-                    Album_item albumItem=new Album_item();
+                for (Integer n : linkedHashSet) {
+                    Album_item albumItem = new Album_item();
                     albumItem.set_ID(n);
                     String[] selectionArgs = new String[]{String.valueOf(n)};
-                    Cursor cursorArray= context.getContentResolver().query(uri,projectionArray,selectionArray,selectionArgs,null);
-                    while(cursorArray.moveToNext()){
+                    Cursor cursorArray = context.getContentResolver().query(uri, projectionArray, selectionArray, selectionArgs, null);
+                    while (cursorArray.moveToNext()) {
                         albumItem.setAlbumName(cursorArray.getString(cursorArray.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
                     }
 
@@ -322,12 +327,70 @@ public class Stored_music implements Observable_Stored_music {
                 //albums_music.setValue(albumArray);
                 emitter.onNext(albumArray);
             }
-        }).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe(o->{ albums_music.setValue((List)o);});
+        }).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe(o -> {
+            albums_music.setValue((List) o);
+        });
         return albums_music;
     }
 
-    public static ArrayList<Music_item> getMusicAtAlbumID(final Context context, int albumID){
-        Uri uri= MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+
+    public static MutableLiveData getArtists(final Context context) {
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Object> emitter) throws Throwable {
+                Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                String[] projections = new String[]{
+                        MediaStore.Audio.Media.ARTIST_ID,
+
+                };
+
+                String selection = MediaStore.Audio.Media.IS_MUSIC + " !=0";
+                Cursor cursor = context.getContentResolver().query(uri, projections, selection, null, MediaStore.Audio.Media.TITLE);
+
+                //I added them to linkedHashSet to remove any duplicates IDs
+                LinkedHashSet<Integer> linkedHashSet = new LinkedHashSet<Integer>();
+                while (cursor.moveToNext()) {
+                    linkedHashSet.add(cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST_ID)));
+                }
+                cursor.close();
+
+                String[] projectionArray = new String[]{
+                        MediaStore.Audio.Media.ARTIST,
+                        MediaStore.Audio.Media.ALBUM_ID
+
+                };
+                String selectionArray = selection + " AND " + MediaStore.Audio.Media.ARTIST_ID + " = ?";
+                //I added them all to arrayList
+                ArrayList<Artist_item> artistArray = new ArrayList<Artist_item>();
+                Uri sArtworkUri = Uri
+                        .parse("content://media/external/audio/albumart");
+                for (Integer n : linkedHashSet) {
+                    Artist_item artistItem = new Artist_item();
+                    artistItem.setArtistId(n);
+                    String[] selectionArgs = new String[]{String.valueOf(n)};
+                    Cursor cursorArray = context.getContentResolver().query(uri, projectionArray, selectionArray, selectionArgs, null);
+                    int albumId=-1;
+                    while (cursorArray.moveToNext()) {
+                        artistItem.setArtistName(cursorArray.getString(cursorArray.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
+                        albumId=cursorArray.getInt(cursorArray.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+                    }
+
+                    Uri uri2 = ContentUris.withAppendedId(sArtworkUri, n);
+                    artistItem.setArtist_pic(uri2);
+                    artistArray.add(artistItem);
+                }
+                linkedHashSet.clear();
+                //albums_music.setValue(albumArray);
+                emitter.onNext(artistArray);
+            }
+        }).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe(o -> {
+            artists_music.setValue((List) o);
+        });
+        return artists_music;
+    }
+
+    public static ArrayList<Music_item> getMusicAtAlbumID(final Context context, int albumID) {
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] projection = {
                 MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.ARTIST,
@@ -336,12 +399,13 @@ public class Stored_music implements Observable_Stored_music {
                 MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.DATA,
                 MediaStore.Audio.Media._ID,
-                       };
+        };
 
-        String selection=MediaStore.Audio.Media.IS_MUSIC + "!=0" +" AND "+ MediaStore.Audio.Media.ALBUM_ID+" = ?";
-        String [] selectionArgs= new String[]{String.valueOf(albumID)};
+        String selection = MediaStore.Audio.Media.IS_MUSIC + "!=0" + " AND " + MediaStore.Audio.Media.ALBUM_ID + " = ?";
+        String[] selectionArgs = new String[]{String.valueOf(albumID)};
         Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, MediaStore.Audio.Media.TITLE);
-        ArrayList<Music_item> listOfSongs= new ArrayList<>();;
+        ArrayList<Music_item> listOfSongs = new ArrayList<>();
+        ;
         while (cursor.moveToNext()) {
             Music_item music = new Music_item();
             String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));

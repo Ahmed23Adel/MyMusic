@@ -13,16 +13,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mymusic_final.Adapter.adapter_music;
-import com.example.mymusic_final.R;
 import com.example.mymusic_final.Adapter.adapter_albums;
+import com.example.mymusic_final.Adapter.adapter_artists;
+import com.example.mymusic_final.Pojo.Artist_item;
+import com.example.mymusic_final.R;
 import com.example.mymusic_final.View.album_details;
-import com.example.mymusic_final.dummy.DummyContent;
 import com.example.mymusic_final.util.Constants;
 import com.example.mymusic_final.util.Stored_music;
 import com.google.android.material.snackbar.Snackbar;
@@ -33,28 +32,43 @@ import java.util.ArrayList;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
- * A fragment representing a list of Items.
+ * A simple {@link Fragment} subclass.
+ * Use the {@link fragment_artist_list#newInstance} factory method to
+ * create an instance of this fragment.
  */
-public class fragmentalbums extends Fragment {
+public class fragment_artist_list extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 2;
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
     private final int requestCode_readExternalStorage=1;
     RecyclerView recyclerView;
-    private adapter_albums adapter_albums=new adapter_albums();
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public fragmentalbums() {
+    private adapter_artists adapterArtists=new adapter_artists();
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public fragment_artist_list() {
+        // Required empty public constructor
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static fragmentalbums newInstance(int columnCount) {
-        fragmentalbums fragment = new fragmentalbums();
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     *
+     * @return A new instance of fragment fragment_artist_list.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static fragment_artist_list newInstance(int columnCount) {
+        fragment_artist_list fragment = new fragment_artist_list();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -74,6 +88,7 @@ public class fragmentalbums extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_albums_list, container, false);
 
         // Set the adapter
@@ -87,7 +102,7 @@ public class fragmentalbums extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             if (Stored_music.isExternalReadGranted(getContext())){
-                showAlbums();
+                showArtists();
             }else{
                 requestPermissionForExternalStorage();
             }
@@ -106,7 +121,7 @@ public class fragmentalbums extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode==requestCode_readExternalStorage){
             if (grantResults[0]==PERMISSION_GRANTED){
-                showAlbums();
+                showArtists();
             }else{
                 Snackbar.make(getView(),"Permission not granted. We can't work without it",Snackbar.LENGTH_LONG).setAction("Grant it", new View.OnClickListener() {
                     @Override
@@ -118,33 +133,32 @@ public class fragmentalbums extends Fragment {
         }
     }
 
-    public void showAlbums(){
-        Stored_music.getAlbums(getContext()).observe(getActivity(), music_items ->{
+    public void showArtists(){
+
+        Stored_music.getArtists(getContext()).observe(getActivity(), music_items ->{
             setRecyclerView((ArrayList) music_items);
         });
     }
 
-    void setRecyclerView(ArrayList music_items){
+    void setRecyclerView(ArrayList<Artist_item> music_items){
         recyclerView.setHasFixedSize(true);
-        adapter_albums= new adapter_albums().setListOfSongs(music_items).setContext(getContext());
+        adapterArtists= new adapter_artists().setListOfSongs(music_items).setContext(getContext());
 
-        adapter_albums.setListener(new adapter_albums.OnClickListener() {
+        adapterArtists.setListener(new adapter_albums.OnClickListener() {
             @Override
             public void onClick(int id) {
-                Intent intent= new Intent(getContext(), album_details.class);
-                intent.putExtra(Constants.Music.ALBUM_ID,id);
-                getContext().startActivity(intent);
+                //Intent intent= new Intent(getContext(), album_details.class);
+                //intent.putExtra(Constants.Music.ALBUM_ID,id);
+                //getContext().startActivity(intent);
             }
         });
 
-        recyclerView.setAdapter(adapter_albums);
+        recyclerView.setAdapter(adapterArtists);
 
         //for sidebar scroll alphabetically
-        MaterialScrollBar materialScrollBar = new MaterialScrollBar(getContext(), recyclerView);
-        materialScrollBar.addSectionIndicator(getContext());
-        materialScrollBar.setAutoHide(true);
-        materialScrollBar.setTextColour(R.color.black);
+        //MaterialScrollBar materialScrollBar = new MaterialScrollBar(getContext(), recyclerView);
+        //materialScrollBar.addSectionIndicator(getContext());
+       // materialScrollBar.setAutoHide(true);
+        //materialScrollBar.setTextColour(R.color.black);
     }
-
-
 }
