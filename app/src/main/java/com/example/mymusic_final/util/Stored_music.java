@@ -57,6 +57,7 @@ public class Stored_music implements Observable_Stored_music {
                         MediaStore.Audio.Media.ALBUM,
                         MediaStore.Audio.Media.DATA,
                         MediaStore.Audio.Media._ID,
+                        MediaStore.Audio.Media.ALBUM_ID
                         //MediaStore.Audio.Media.COMPOSER
                         //MediaStore.Audio.Media.DATE_ADDED
                         //MediaStore.Audio.Media.DATE_MODIFIED
@@ -76,6 +77,7 @@ public class Stored_music implements Observable_Stored_music {
                     String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
                     String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                     Integer id = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
+                    Integer album_id = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
 
                     //Log.v("main","i ");
                     //Log.v("main","i "+cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID)));
@@ -97,6 +99,7 @@ public class Stored_music implements Observable_Stored_music {
                     music.setPath(path);
                     music.setAlbumName(album);
                     music.set_ID(id);
+                    music.setAlbumId(album_id);
                     listOfSongs.add(music);
                 }
                 cursor.close();

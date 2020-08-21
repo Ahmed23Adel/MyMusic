@@ -13,6 +13,15 @@ public class Music_item {
     private Uri AlbumArt;
     private String path;
     private String albumName;
+    private int albumId;
+
+    public int getAlbumId() {
+        return albumId;
+    }
+
+    public void setAlbumId(int albumId) {
+        this.albumId = albumId;
+    }
 
     public int get_ID() {
         return _ID;

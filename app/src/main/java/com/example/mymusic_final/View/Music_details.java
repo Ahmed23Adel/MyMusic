@@ -25,6 +25,7 @@ import com.example.mymusic_final.databinding.ActivityMusicDetailsBinding;
 import com.example.mymusic_final.play_cloud.Music_player;
 import com.example.mymusic_final.play_cloud.Observable;
 import com.example.mymusic_final.play_cloud.Observer;
+import com.example.mymusic_final.util.Constants;
 import com.example.mymusic_final.util.Stored_music;
 import com.example.mymusic_final.util.SwipeDetector;
 import androidx.annotation.NonNull;
@@ -364,7 +365,9 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
         binding.includedMusic.goAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent= new Intent(Music_details.this, album_details.class);
+                intent.putExtra(Constants.Music.ALBUM_ID,Music_player.getListOfSongs().get(Music_player.getPosition()).getAlbumId());
+                startActivity(intent);
             }
         });
         binding.includedMusic.goArtist.setOnClickListener(new View.OnClickListener() {
