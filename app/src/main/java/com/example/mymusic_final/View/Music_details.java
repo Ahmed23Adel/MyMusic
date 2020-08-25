@@ -366,7 +366,8 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(Music_details.this, album_details.class);
-                intent.putExtra(Constants.Music.ALBUM_ID,Music_player.getListOfSongs().get(Music_player.getPosition()).getAlbumId());
+                intent.putExtra(Constants.Music.ID,Music_player.getListOfSongs().get(Music_player.getPosition()).getAlbumId());
+                intent.setAction(album_details.ACTION_ALBUMS);
                 startActivity(intent);
             }
         });

@@ -25,6 +25,7 @@ import com.example.mymusic_final.Pojo.Album_item;
 import com.example.mymusic_final.Pojo.Artist_item;
 import com.example.mymusic_final.Pojo.Details_music_item;
 import com.example.mymusic_final.Pojo.Music_item;
+import com.example.mymusic_final.Pojo.Specific_folder;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -43,8 +44,8 @@ public class Stored_music implements Observable_Stored_music {
     public static MutableLiveData<List<Music_item>> music = new MutableLiveData<List<Music_item>>();
     private static MutableLiveData<Details_music_item> details_music_itemMutableLiveData = new MutableLiveData<Details_music_item>();
     public static MutableLiveData<List<Music_item>> search_music = new MutableLiveData<List<Music_item>>();
-    public static MutableLiveData<List<Album_item>> albums_music = new MutableLiveData<List<Album_item>>();
-    public static MutableLiveData<List<Artist_item>> artists_music = new MutableLiveData<List<Artist_item>>();
+    public static MutableLiveData<List<Specific_folder>> albums_music = new MutableLiveData<List<Specific_folder>>();
+    public static MutableLiveData<List<Specific_folder>> artists_music = new MutableLiveData<List<Specific_folder>>();
 
     public static MutableLiveData<List<Music_item>> getListOfSongs(final Context context) {
         Observable.create(new ObservableOnSubscribe<Object>() {
@@ -307,20 +308,20 @@ public class Stored_music implements Observable_Stored_music {
                 };
                 String selectionArray = selection + " AND " + MediaStore.Audio.Media.ALBUM_ID + " = ?";
                 //I added them all to arrayList
-                ArrayList<Album_item> albumArray = new ArrayList<Album_item>();
+                ArrayList<Specific_folder> albumArray = new ArrayList<Specific_folder>();
                 Uri sArtworkUri = Uri
                         .parse("content://media/external/audio/albumart");
                 for (Integer n : linkedHashSet) {
-                    Album_item albumItem = new Album_item();
-                    albumItem.set_ID(n);
+                    Specific_folder albumItem = new Album_item();
+                    albumItem.setId(n);
                     String[] selectionArgs = new String[]{String.valueOf(n)};
                     Cursor cursorArray = context.getContentResolver().query(uri, projectionArray, selectionArray, selectionArgs, null);
                     while (cursorArray.moveToNext()) {
-                        albumItem.setAlbumName(cursorArray.getString(cursorArray.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
+                        albumItem.setName(cursorArray.getString(cursorArray.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
                     }
 
                     Uri uri2 = ContentUris.withAppendedId(sArtworkUri, n);
-                    albumItem.setAlbumUri(uri2);
+                    albumItem.setPic_uri(uri2);
                     albumArray.add(albumItem);
                 }
                 linkedHashSet.clear();
@@ -361,22 +362,22 @@ public class Stored_music implements Observable_Stored_music {
                 };
                 String selectionArray = selection + " AND " + MediaStore.Audio.Media.ARTIST_ID + " = ?";
                 //I added them all to arrayList
-                ArrayList<Artist_item> artistArray = new ArrayList<Artist_item>();
+                ArrayList<Specific_folder> artistArray = new ArrayList<Specific_folder>();
                 Uri sArtworkUri = Uri
                         .parse("content://media/external/audio/albumart");
                 for (Integer n : linkedHashSet) {
-                    Artist_item artistItem = new Artist_item();
-                    artistItem.setArtistId(n);
+                    Specific_folder artistItem = new Artist_item();
+                    artistItem.setId(n);
                     String[] selectionArgs = new String[]{String.valueOf(n)};
                     Cursor cursorArray = context.getContentResolver().query(uri, projectionArray, selectionArray, selectionArgs, null);
                     int albumId=-1;
                     while (cursorArray.moveToNext()) {
-                        artistItem.setArtistName(cursorArray.getString(cursorArray.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
+                        artistItem.setName(cursorArray.getString(cursorArray.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
                         albumId=cursorArray.getInt(cursorArray.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
                     }
 
-                    Uri uri2 = ContentUris.withAppendedId(sArtworkUri, n);
-                    artistItem.setArtist_pic(uri2);
+                    Uri uri2 = ContentUris.withAppendedId(sArtworkUri, albumId);
+                    artistItem.setPic_uri(uri2);
                     artistArray.add(artistItem);
                 }
                 linkedHashSet.clear();
@@ -406,6 +407,58 @@ public class Stored_music implements Observable_Stored_music {
         Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, MediaStore.Audio.Media.TITLE);
         ArrayList<Music_item> listOfSongs = new ArrayList<>();
         ;
+        while (cursor.moveToNext()) {
+            Music_item music = new Music_item();
+            String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+            String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+            String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
+            String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
+            Integer id = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
+
+            //Log.v("main","i ");
+            //Log.v("main","i "+cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID)));
+            String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+
+            Uri sArtworkUri = Uri
+                    .parse("content://media/external/audio/albumart");
+
+
+            Uri uri2 = ContentUris.withAppendedId(sArtworkUri,
+                    cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
+            music.setAlbumArt(uri2);
+
+            music.setMusic_title(title);
+            music.setArtist(artist);
+            music.setFav(false);
+            music.setDuration(duration);
+            music.setPicUri(null);
+            music.setPath(path);
+            music.setAlbumName(album);
+            music.set_ID(id);
+            listOfSongs.add(music);
+        }
+        cursor.close();
+        return listOfSongs;
+    }
+
+
+    public static ArrayList<Music_item> getMusicAtArtistId(final Context context, int artistId) {
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = {
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.DURATION,
+                MediaStore.Audio.Media.ALBUM_ID,
+                MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media._ID,
+        };
+
+        String selection = MediaStore.Audio.Media.IS_MUSIC + "!=0" + " AND " + MediaStore.Audio.Media.ARTIST_ID + " = ?";
+        String[] selectionArgs = new String[]{String.valueOf(artistId)};
+        Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, MediaStore.Audio.Media.TITLE);
+        ArrayList<Music_item> listOfSongs = new ArrayList<>();
+
         while (cursor.moveToNext()) {
             Music_item music = new Music_item();
             String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));

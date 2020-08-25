@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.mymusic_final.Pojo.Album_item;
 import com.example.mymusic_final.Pojo.Music_item;
+import com.example.mymusic_final.Pojo.Specific_folder;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.dummy.DummyContent.DummyItem;
 import com.example.mymusic_final.play_cloud.Music_player;
@@ -25,6 +27,7 @@ import com.turingtechnologies.materialscrollbar.INameableAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
@@ -32,7 +35,7 @@ import java.util.List;
  */
 public class adapter_albums extends RecyclerView.Adapter<adapter_albums.ViewHolder> implements INameableAdapter {
 
-    ArrayList<Album_item> listOfAlbums;
+    ArrayList<Specific_folder> listOfAlbums;
     Context context;
     public static int position;
     public OnClickListener listener;
@@ -41,14 +44,14 @@ public class adapter_albums extends RecyclerView.Adapter<adapter_albums.ViewHold
         return this;
     }
 
-    public adapter_albums setListOfSongs(ArrayList<Album_item> listOfAlbums) {
+    public adapter_albums setListOfSongs(ArrayList<Specific_folder> listOfAlbums) {
         this.listOfAlbums = listOfAlbums;
         return this;
     }
 
     @Override
     public Character getCharacterForElement(int element) {
-        return Character.valueOf(listOfAlbums.get(element).getAlbumName().charAt(0));
+        return Character.valueOf(listOfAlbums.get(element).getName().charAt(0));
     }
     public adapter_albums() {
     }
@@ -62,15 +65,16 @@ public class adapter_albums extends RecyclerView.Adapter<adapter_albums.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Album_item currentAlbumItem=listOfAlbums.get(position);
+        Specific_folder currentAlbumItem=listOfAlbums.get(position);
 
-        holder.title.setText(currentAlbumItem.getAlbumName());
-        Glide.with(context).load(currentAlbumItem.getAlbumUri()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
+        holder.title.setText(currentAlbumItem.getName());
+        Glide.with(context).load(currentAlbumItem.getPic_uri()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                 .into(holder.albumPic);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClick(currentAlbumItem.get_ID());
+                Log.v("main","k"+currentAlbumItem.getId());;
+                listener.onClick(currentAlbumItem.getId());
             }
         });
 

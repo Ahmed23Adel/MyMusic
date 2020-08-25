@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import com.example.mymusic_final.Adapter.adapter_albums;
 import com.example.mymusic_final.Adapter.adapter_artists;
 import com.example.mymusic_final.Pojo.Artist_item;
+import com.example.mymusic_final.Pojo.Specific_folder;
 import com.example.mymusic_final.R;
 import com.example.mymusic_final.View.album_details;
 import com.example.mymusic_final.util.Constants;
@@ -140,16 +141,17 @@ public class fragment_artist_list extends Fragment {
         });
     }
 
-    void setRecyclerView(ArrayList<Artist_item> music_items){
+    void setRecyclerView(ArrayList<Specific_folder> music_items){
         recyclerView.setHasFixedSize(true);
         adapterArtists= new adapter_artists().setListOfSongs(music_items).setContext(getContext());
 
         adapterArtists.setListener(new adapter_albums.OnClickListener() {
             @Override
             public void onClick(int id) {
-                //Intent intent= new Intent(getContext(), album_details.class);
-                //intent.putExtra(Constants.Music.ALBUM_ID,id);
-                //getContext().startActivity(intent);
+                Intent intent= new Intent(getContext(), album_details.class);
+                intent.putExtra(Constants.Music.ID,id);
+                intent.setAction(album_details.ACTION_ARTISTS);
+                getContext().startActivity(intent);
             }
         });
 

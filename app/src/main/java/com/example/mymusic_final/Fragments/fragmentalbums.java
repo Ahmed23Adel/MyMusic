@@ -29,6 +29,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.turingtechnologies.materialscrollbar.MaterialScrollBar;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -132,7 +133,10 @@ public class fragmentalbums extends Fragment {
             @Override
             public void onClick(int id) {
                 Intent intent= new Intent(getContext(), album_details.class);
-                intent.putExtra(Constants.Music.ALBUM_ID,id);
+                Log.v("main","kkkk"+id);
+                intent.putExtra(Constants.Music.ID,id);
+                intent.setAction(album_details.ACTION_ALBUMS);
+                //intent.putExtra(Constants.Music.DETAILS_ACTIONS,album_details.ACTIONS_ALBUMS);
                 getContext().startActivity(intent);
             }
         });

@@ -40,16 +40,29 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 public class album_details extends AppCompatActivity implements Observer {
 
-    private int albumID;
+    private int ID;
     private ArrayList<Music_item> listOfMusic;
     private ActivityAlbumDetailsBinding binding;
     private fragment_music fragmentMusic;
+
+    public static String ACTION_ALBUMS="1";
+    public static String ACTION_ARTISTS="2";
+    private String CURRENT_ACTION=ACTION_ALBUMS;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Adele");
-        albumID=getIntent().getExtras().getInt(Constants.Music.ALBUM_ID);
-        listOfMusic= Stored_music.getMusicAtAlbumID(this,albumID);
+        ID=getIntent().getExtras().getInt(Constants.Music.ID);
+
+        CURRENT_ACTION=getIntent().getAction();
+        if (CURRENT_ACTION.equals(ACTION_ALBUMS)){
+            listOfMusic= Stored_music.getMusicAtAlbumID(this,ID);
+        }else if (CURRENT_ACTION.equals(ACTION_ARTISTS)){
+            listOfMusic= Stored_music.getMusicAtArtistId(this,ID);
+
+        }
+
         setTitle(listOfMusic.get(0).getAlbumName());
         binding=ActivityAlbumDetailsBinding.inflate(getLayoutInflater());
         View root= binding.getRoot();
@@ -74,7 +87,7 @@ public class album_details extends AppCompatActivity implements Observer {
     }
 
     private void setRecyclerView() {
-        fragmentMusic.setAlbum_id(albumID);
+        fragmentMusic.setAlbum_id(ID);
         FragmentManager fragmentManage = getSupportFragmentManager();
         fragmentManage.beginTransaction()
                 .add(R.id.frameLayout, fragmentMusic)
@@ -126,7 +139,7 @@ public class album_details extends AppCompatActivity implements Observer {
             }
         });
 
-       initBottomBar();
+        initBottomBar();
 
     }
 

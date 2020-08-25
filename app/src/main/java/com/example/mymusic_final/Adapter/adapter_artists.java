@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mymusic_final.Pojo.Album_item;
 import com.example.mymusic_final.Pojo.Artist_item;
+import com.example.mymusic_final.Pojo.Specific_folder;
 import com.example.mymusic_final.R;
 import com.turingtechnologies.materialscrollbar.INameableAdapter;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 public class adapter_artists extends RecyclerView.Adapter<adapter_artists.ViewHolder> implements INameableAdapter {
 
-    ArrayList<Artist_item> listOfAlbums;
+    ArrayList<Specific_folder> listOfAlbums;
     Context context;
     public static int position;
     public adapter_albums.OnClickListener listener;
@@ -30,14 +31,14 @@ public class adapter_artists extends RecyclerView.Adapter<adapter_artists.ViewHo
         return this;
     }
 
-    public adapter_artists setListOfSongs(ArrayList<Artist_item> listOfAlbums) {
+    public adapter_artists setListOfSongs(ArrayList<Specific_folder> listOfAlbums) {
         this.listOfAlbums = listOfAlbums;
         return this;
     }
 
     @Override
     public Character getCharacterForElement(int element) {
-        return Character.valueOf(listOfAlbums.get(element).getArtistName().charAt(0));
+        return Character.valueOf(listOfAlbums.get(element).getName().charAt(0));
     }
 
 
@@ -51,15 +52,15 @@ public class adapter_artists extends RecyclerView.Adapter<adapter_artists.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Artist_item currentArtistItem=listOfAlbums.get(position);
+        Specific_folder currentArtistItem=listOfAlbums.get(position);
 
-        holder.title.setText(currentArtistItem.getArtistName());
-        Glide.with(context).load(currentArtistItem.getArtist_pic()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
+        holder.title.setText(currentArtistItem.getName());
+        Glide.with(context).load(currentArtistItem.getPic_uri()).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
                 .into(holder.albumPic);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClick(currentArtistItem.getArtistId());
+                listener.onClick(currentArtistItem.getId());
             }
         });
 
