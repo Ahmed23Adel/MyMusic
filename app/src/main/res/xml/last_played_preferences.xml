@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="Last played">
+
+       <EditTextPreference
+           android:key="@string/key_music_position"
+           android:title="@string/key_music_position"
+           />
+
+        <!--it should be either albums artists music -->
+        <EditTextPreference
+           android:key="@string/key_type"
+           android:title="@string/key_type"
+           />
+
+        <EditTextPreference
+           android:key="@string/key_specific_folder_id"
+           android:title="@string/key_specific_folder_id"
+           />
+    </PreferenceCategory>
+</PreferenceScreen>

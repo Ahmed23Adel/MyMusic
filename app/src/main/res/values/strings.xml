@@ -153,4 +153,10 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="key_music_position">music_position</string>
+    <string name="key_type">type</string>
+    <string name="type_ALBUMS">type-albums</string>
+    <string name="type_ARTISTS">type-artists</string>
+    <string name="type_MUSIC">type-music</string>
+    <string name="key_specific_folder_id">specific_folde</string>
 </resources>
