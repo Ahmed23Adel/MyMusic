@@ -62,6 +62,7 @@
     <string name="key_album">key_album</string>
     <string name="key_artist">key_artist</string>
     <string name="title_activity_album_details">ScrollingActivity</string>
+    <string name="norification_channel_name">My Music</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

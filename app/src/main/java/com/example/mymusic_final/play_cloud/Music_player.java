@@ -9,12 +9,13 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.example.mymusic_final.Notifications.NotificationGenerator;
 import androidx.annotation.Nullable;
 
 import com.example.mymusic_final.Pojo.Music_item;
+import com.example.mymusic_final.util.Constants;
 
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 
 public class Music_player extends Service implements Observable{
@@ -114,7 +115,11 @@ public class Music_player extends Service implements Observable{
 
 
     public static void playAtPosition(int position) {
+        Log.v("main","4");
 
+        Intent intent= new Intent(mContext,NotificationGenerator.class);
+        intent.setAction(Constants.Notifications.SHOW_NOTIFICATION);
+        mContext.startService(intent);
         currentState.playAtPosition(position);
         Music_changed();
     }

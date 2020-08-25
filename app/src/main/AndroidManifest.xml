@@ -23,11 +23,16 @@
         <activity
             android:name=".View.Music_details"
             android:label="@string/title_activity_music_details"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleInstance"
+
+            />
         <activity
             android:name=".View.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleInstance"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,6 +42,19 @@
 
         <service android:name=".Services.old_Music_player" />
         <service android:name=".play_cloud.Music_player" />
+        <service android:name=".Notifications.NotificationGenerator" />
+
+        <receiver android:name=".Notifications.NotificationBroadCast">
+
+            <intent-filter
+                >
+
+                <action android:name="actions-previous"/>
+                <action android:name="actions-next"/>
+                <action android:name="actions-play-or-pause"/>
+
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
