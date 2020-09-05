@@ -46,6 +46,7 @@ public class adapter_music extends RecyclerView.Adapter<adapter_music.itemHolder
         return new itemHolder(view);
     }
 
+    //TODO : change the icon better
     @Override
     public void onBindViewHolder(@NonNull itemHolder holder, int position) {
         Music_item currentMusic=listOfSongs.get(position);
