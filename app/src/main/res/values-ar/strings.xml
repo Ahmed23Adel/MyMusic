@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyMusic</string>
+    <string name="tab_text_1">أعانى</string>
+    <string name="tab_text_2">البومات</string>
+    <string name="tab_text_3">فنانون</string>
+    <string name="next">التالى</string>
+    <string name="previous">السابق</string>
+    <string name="delete">مسح</string>
+    <string name="go_to_album">اذهب للألبوم</string>
+    <string name="go_to_artist">اذهب للفنان</string>
+    <string name="share">شارك</string>
+    <string name="editor">المحرر</string>
+    <string name="details">تفاصيل</string>
+    <string name="title">العنوان</string>
+    <string name="artist">الفنان</string>
+    <string name="album">الألبوم</string>
+    <string name="duration">المدة</string>
+    <string name="file_path">مسار الملف</string>
+    <string name="file_name">اسم الملف</string>
+    <string name="size">الحجم</string>
+    <string name="migaByte">MP</string>
+    <string name="KiloByte">KB</string>
+    <string name="format">Format</string>
+    <string name="length">المدة</string>
+    <string name="bitrate">Bitrate</string>
+    <string name="sampling_rate">Sampling rate</string>
+    <string name="composer">ملحن</string>
+    <string name="date_added">تاريخ الاضافة</string>
+    <string name="last_modified">تاريخ اخر تعديل</string>
+    <string name="is_alarm">نغمة المنبة</string>
+    <string name="is_ringtone">نغمة الاتصال</string>
+    <string name="channels_count">عدد القنوات</string>
+    <string name="do_want_delete">هل حقاَ تريد ان تمسح هذة الاغنية</string>
+    <string name="edit_my_song">عدل الاغنية</string>
+    <string name="save">حفظ</string>
+    <string name="cancel">اغلق</string>
+    <string name="edit_my_music">عدل اغنيتى</string>
+    <string name="messages_header">رسالة</string>
+    <string name="sync_header">تزامن</string>
+    <string name="search_in">ابحث فى</string>
+    <string name="norification_channel_name">اغانى</string>
+</resources>
