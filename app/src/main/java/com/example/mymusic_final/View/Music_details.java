@@ -16,7 +16,6 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.mymusic_final.Fragments.Details_of_song;
 import com.example.mymusic_final.Fragments.Edit_song;
-import com.example.mymusic_final.Fragments.SettingsFragment;
 import com.example.mymusic_final.Observing.Observable_Stored_music;
 import com.example.mymusic_final.Observing.Observer_Stored_music;
 import com.example.mymusic_final.Pojo.Music_item;
@@ -39,6 +38,7 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -57,7 +57,7 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
     final Details_of_song details_of_song = Details_of_song.newInstance(null, null);
     final Edit_song edit_song = Edit_song.newInstance(null, null);
     Context self;
-
+    int lastPosictionPlayed =-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,12 +124,32 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
 
         Observable.subscribe(this);
         Observable_Stored_music.subscribe(this);
-
+        lastPosictionPlayed =Music_player.getPosition();
     }
 
 
+    public int  getRandomPlaceholder(){
+        Random random= new Random();
+        int max=4;
+        int min=1;
+        int ran=random.nextInt((max-min)+1)+min;
+        String uri="@drawable/placeholder_"+ran;
+        int imageRes=getResources().getIdentifier(uri,null,getPackageName());
+        return imageRes;
+    }
 
+    boolean isRandomUsed=false;
+    int rand=-1;
+    int getStaticRandomPlaceholderAndSetTrue(){
+        if (!isRandomUsed){
+            isRandomUsed=true;
+            rand= getRandomPlaceholder();
+            return rand;
+        }else{
+            return rand;
+        }
 
+    }
 
     public void initMusicInfo(List<Music_item> listOfSongs, Integer position) {
         binding.includedMusic.seekBar.setMax(listOfSongs.get(position).getDurationMM());
@@ -138,12 +158,34 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
         binding.includedMusic.duration.setText(listOfSongs.get(position).getDuration());
         RequestOptions requestOptions = new RequestOptions();
         requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(32));
-        Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).apply(requestOptions).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
+
+        Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).apply(requestOptions).error(getStaticRandomPlaceholderAndSetTrue()).placeholder(R.drawable.audio_track)
                 .into(binding.includedMusic.albumArt);
+
+
+        Glide.with(this)
+                .load(getStaticRandomPlaceholderAndSetTrue())
+                .apply(bitmapTransform(new BlurTransformation(50, 5)))
+                .error(getStaticRandomPlaceholderAndSetTrue())
+                .placeholder(getStaticRandomPlaceholderAndSetTrue())
+                .into(new CustomTarget<Drawable>() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        binding.includedMusic.wholeBackground.setBackground(resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
 
         Glide.with(this)
                 .load(listOfSongs.get(position).getAlbumArt())
                 .apply(bitmapTransform(new BlurTransformation(50, 5)))
+                .error(getStaticRandomPlaceholderAndSetTrue())
+                .placeholder(getStaticRandomPlaceholderAndSetTrue())
                 .into(new CustomTarget<Drawable>() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                     @Override
@@ -474,36 +516,56 @@ public class Music_details extends AppCompatActivity implements Observer, Observ
     @Override
     public void updated(ArrayList<Music_item> listOfSongs, int position) {
         if (!isDestroyed()) {
-            binding.includedMusic.musicTitle.setText(listOfSongs.get(position).getMusic_title());
-            binding.includedMusic.musicArtistAlbum.setText(listOfSongs.get(position).getArtistAlbum());
             binding.includedMusic.duration.setText(listOfSongs.get(position).getDuration());
-            binding.includedMusic.seekBar.setMax(listOfSongs.get(position).getDurationMM());
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(32));
-            Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).apply(requestOptions).error(R.drawable.audio_track).placeholder(R.drawable.audio_track)
-                    .into(binding.includedMusic.albumArt);
+            if (position != lastPosictionPlayed) {
+                lastPosictionPlayed=position;
+                binding.includedMusic.seekBar.setMax(listOfSongs.get(position).getDurationMM());
+                binding.includedMusic.musicTitle.setText(listOfSongs.get(position).getMusic_title());
+                binding.includedMusic.musicArtistAlbum.setText(listOfSongs.get(position).getArtistAlbum());
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(32));
+                isRandomUsed=false;
+                Glide.with(this).load(listOfSongs.get(position).getAlbumArt()).apply(requestOptions).error(getStaticRandomPlaceholderAndSetTrue()).placeholder(R.drawable.audio_track)
+                        .into(binding.includedMusic.albumArt);
 
-            Glide.with(this)
-                    .load(listOfSongs.get(position).getAlbumArt())
-                    .apply(bitmapTransform(new BlurTransformation(50, 5)))
-                    .into(new CustomTarget<Drawable>() {
-                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            binding.includedMusic.wholeBackground.setBackground(resource);
-                        }
+                Glide.with(this)
+                        .load(getStaticRandomPlaceholderAndSetTrue())
+                        .apply(bitmapTransform(new BlurTransformation(50, 5)))
+                        .into(new CustomTarget<Drawable>() {
+                            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                            @Override
+                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                binding.includedMusic.wholeBackground.setBackground(resource);
+                            }
 
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
 
-                        }
-                    });
+                            }
+                        });
 
-            if (Music_player.isPlaying()) {
-                binding.includedMusic.playAndPause.setImageResource(R.drawable.pause_red);
-            } else {
-                binding.includedMusic.playAndPause.setImageResource(R.drawable.play_red);
+                Glide.with(this)
+                        .load(listOfSongs.get(position).getAlbumArt())
+                        .apply(bitmapTransform(new BlurTransformation(50, 5)))
+                        .into(new CustomTarget<Drawable>() {
+                            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                            @Override
+                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                binding.includedMusic.wholeBackground.setBackground(resource);
+                            }
 
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                            }
+                        });
+
+                if (Music_player.isPlaying()) {
+                    binding.includedMusic.playAndPause.setImageResource(R.drawable.pause_red);
+                } else {
+                    binding.includedMusic.playAndPause.setImageResource(R.drawable.play_red);
+
+                }
             }
         }
     }
