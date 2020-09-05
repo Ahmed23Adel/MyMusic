@@ -121,31 +121,31 @@ public class MainActivity extends AppCompatActivity implements Observer,Observer
 
 
         if (type!=null){
-           if (type.equals(getString(R.string.type_MUSIC))){
-               Stored_music.getListOfSongs(this).observe(this, new androidx.lifecycle.Observer<List<Music_item>>() {
-                   @Override
-                   public void onChanged(List<Music_item> music_items) {
-                       Log.v("main","f22");
-                       Music_player.setListOfSongs((ArrayList) music_items);
-                       Music_player.setPosition(position);
-                       initInfo((ArrayList<Music_item>) music_items,position);
+            if (type.equals(getString(R.string.type_MUSIC))){
+                Stored_music.getListOfSongs(this).observe(this, new androidx.lifecycle.Observer<List<Music_item>>() {
+                    @Override
+                    public void onChanged(List<Music_item> music_items) {
+                        Log.v("main","f22");
+                        Music_player.setListOfSongs((ArrayList) music_items);
+                        Music_player.setPosition(position);
+                        initInfo((ArrayList<Music_item>) music_items,position);
 
-                   }
-               });
-           }else {
-               if (type.equals(getString(R.string.type_ALBUMS))){
-                   ArrayList arrayList= Stored_music.getMusicAtAlbumID(this,specific_folder_id);
-                   Music_player.setListOfSongs(arrayList);
-                   Music_player.setPosition(position);
-                   initInfo(arrayList,specific_folder_id);
-               }else{
-                   ArrayList arrayList= Stored_music.getMusicAtArtistId(this,specific_folder_id);
-                   Music_player.setListOfSongs(arrayList);
-                   Music_player.setPosition(position);
-                   initInfo(arrayList,specific_folder_id);
+                    }
+                });
+            }else {
+                if (type.equals(getString(R.string.type_ALBUMS))){
+                    ArrayList arrayList= Stored_music.getMusicAtAlbumID(this,specific_folder_id);
+                    Music_player.setListOfSongs(arrayList);
+                    Music_player.setPosition(position);
+                    initInfo(arrayList,specific_folder_id);
+                }else{
+                    ArrayList arrayList= Stored_music.getMusicAtArtistId(this,specific_folder_id);
+                    Music_player.setListOfSongs(arrayList);
+                    Music_player.setPosition(position);
+                    initInfo(arrayList,specific_folder_id);
 
-               }
-           }
+                }
+            }
         }
     }
 
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements Observer,Observer
     @Override
     public void updated(ArrayList<Music_item> listOfSongs, int position) {
         isFromPref=false;
-       initInfo(listOfSongs,position);
+        initInfo(listOfSongs,position);
 
 
     }
